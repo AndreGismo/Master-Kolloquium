@@ -1,0 +1,78 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% flow chart für das Funktionsprinzip der Software
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}[
+	block/.style={
+		font=\tiny,
+		draw,
+		rectangle,
+		minimum width={4cm},
+		execute at begin node=\strut,
+		}
+	]
+	
+	\node[block](grid){Netztopologie};
+	
+	\node[block,
+		right=0.3 of grid](time){Zeitliche Betrachtung};
+		
+	\node[block,
+		below left=0.5 and 0.15 of time.south](sets){Entsprechende Sets 
+		erzeugen};
+		
+	\node[block,
+		below=0.3 of sets](params){Parameter erzeugen};
+		
+	\node[block,
+		below=0.3 of params](vars){Variablen erzeugen};
+		
+	\node[block,
+		below=0.3 of vars](bounds){Ober-/Untergrenzen festlegen};
+		
+	\node[block,
+		below=0.3 of bounds](target){Zielfunktion erzeugen};
+		
+	\node[block,
+	 	below=0.3 of target](constraints){Restriktionen erzeugen};
+	 	
+	 \node[block,
+	 	right=0.9 of params](households){Haushaltslastprofile};
+	 	
+	 \node[block,
+	 	right=0.9 of bounds](cust-wish){Kundenwunsch};
+	 	
+	 \node[block,
+	 	below=0.5 of constraints](result){Optimierungsmodel lösen};
+	 	
+	 \node[left=0.3 of sets,
+	 	rotate=90](model){\scriptsize Optimierungsmodel erzeugen};
+	 	
+	 \node[above=0.1 of cust-wish](BEV){\footnotesize\ttfamily 
+	 BatteryElectricVehicle};
+	 
+	 \node[above=0.1 of households](HH){\footnotesize\ttfamily Household};
+	 
+	 \node[left=1 of params,
+	 	rotate=90](GLO){\footnotesize\ttfamily GridLineOptimizer};
+	 	
+	 	
+	 \draw[-stealth](grid)--(sets);
+	 \draw[-stealth](time)--(sets);
+	 \draw[-stealth](sets)--(params);
+	 \draw[-stealth](params)--(vars);
+	 \draw[-stealth](vars)--(bounds);
+	 \draw[-stealth](bounds)--(target);
+	 \draw[-stealth](target)--(constraints);
+	 \draw[-stealth](constraints)--(result);
+	 \draw[-stealth](cust-wish)--(bounds);
+	 \draw[-stealth](households)--(params);
+	 
+	 \begin{pgfonlayer}{background}
+	 	\path(sets.west)+(-0.6, 0.5) node (a) {};
+		\path(constraints.east)+(0.1, -0.5) node (b) {};
+		\path[fill=yellow!20, rounded corners, draw=black!50, dashed]
+		(a) rectangle (b);
+	 \end{pgfonlayer}
+
+\end{tikzpicture}

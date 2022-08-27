@@ -19,6 +19,9 @@
 \usetikzlibrary{
 	positioning,
 	calc,
+	decorations.shapes,
+	decorations.pathmorphing,
+	decorations.pathreplacing,
 }
 \usepackage{listings}
 
@@ -162,7 +165,7 @@ gemeinsamen Netzzweig}
 	}
 \end{frame}
 
-\section{Thereotische Umsetzung}
+\section{Theorie}
 
 \begin{frame}{Prinzip des Optimierungsalgorithmus}
 	\begin{figure}
@@ -197,7 +200,7 @@ gemeinsamen Netzzweig}
 
 
 \begin{frame}{Formulierung als Linear Programming}
-	\begin{description}
+	\begin{description}[<+->]
 		\item[Zielfunktion] Maximieren der der Ladeströme an allen Knoten zu 
 		jeweils allen Zeitpunkten
 		\item[Restriktion] Die Spannung am letzten Knoten darf nicht aus dem
@@ -206,9 +209,96 @@ gemeinsamen Netzzweig}
 		\item[Restriktion] Keine der Leitungen darf überlastet werden
 		\item[Restriktion] Energieerhaltung beim Laden
 	\end{description}
-	\begin{block}{$\dots$ und außerdem:}
-		4 Weitere Restriktionen \enquote{faires} Laden
-	\end{block}
+	\onslide<6>{
+		\begin{block}{$\dots$ und außerdem:}
+			4 Weitere Restriktionen für \enquote{faires} Laden
+		\end{block}
+	}
+\end{frame}
+
+
+\begin{frame}{Rolling Horizon für große Optimierungsprobleme}
+	\begin{itemize}[<+->]
+		\item Großer Zeithorizont, zu dem ein großes Optimierungsproblem
+		korrespondiert
+		\item Großen Zeithorizont zerlegen in mehrere kleine Horizonte
+		\item Die zu den einzelnen Horizonten korrespondierenden 
+		Optimierungsprobleme lösen
+		\item Die Gesamtlösung ergibt sich aus den einzelnen Teillösungen
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Rolling Horizon für große Optimierungsprobleme}
+	\begin{figure}
+		\centering
+		\include{tikz-picz/rolling-horizon-scheme}
+	\end{figure}
+\end{frame}
+
+
+\section{Praktische Umsetzung}
+
+\begin{frame}{Optimierungsprobleme mit Python lösen}
+	\begin{itemize}
+		\item Python als Programmiersprache
+		\item Pyomo als Optimierungsframework
+		\item glpk als Solver
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Aufbau der Software zur Optimierung}
+	Mehrere Klassen:
+	\begin{itemize}[<+(1)->]
+		\item Eigene Klasse \texttt{GridLineOptimizer} für Netzstrahl und 
+		Logik der Optimierung
+		\item Eigene Klasse \texttt{BatteryElectricVehicle} für BEVs
+		\item Eigene Klasse \texttt{Household} für Haushaltslasten
+	\end{itemize}
+	
+	\onslide<5->{
+		\begin{block}{Modularer Aufbau}
+			Bessere Wartbarkeit und Portabilität
+		\end{block}
+	}
+\end{frame}
+
+
+\begin{frame}{Funktionsprinzip der Software zur Optimierung}
+	\begin{figure}
+		\centering
+		\input{tikz-picz/software-principle}
+	\end{figure}
+\end{frame}
+
+
+\section{Ergebnisse}
+
+\begin{frame}{Untersuchung anhand von Szenarien}
+	\begin{itemize}[<+->]
+		\item Definieren unterschiedlicher Szenarien
+		\begin{itemize}
+			\item Transformatorleistung
+			\item Anzahl Knoten
+			\item Position der Ladesäulen
+			\item $\dots$
+		\end{itemize}
+		\item Optimierung ausführen
+		\item Ergebnisse mithilfe der Simulationsumgebung validieren
+	\end{itemize}
+\end{frame}
+
+
+\section{Fazit}
+
+\begin{frame}{Fazit}
+	bla bla
+\end{frame}
+
+
+\begin{frame}{Literatur}
+	\printbibliography
 \end{frame}
 
 
@@ -218,11 +308,6 @@ gemeinsamen Netzzweig}
 		\text{max.}\quad\sum_{t\in\mathcal{T}}\bigg(\sum_{n\in
 		\mathcal{N_\mathsf{BEV}}}\!\!I^\mathsf{BEV}_{t,n}\bigg)
 	\end{equation*}
-\end{frame}
-
-
-\begin{frame}{Literatur}
-	\printbibliography
 \end{frame}
 
 \end{document}
