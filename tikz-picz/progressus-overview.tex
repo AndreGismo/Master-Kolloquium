@@ -1,0 +1,77 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bild zum Überblick der aktuellen Aufgaben im PROGRESSUS-Projekt
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}[
+	every node/.style={
+		font=\footnotesize
+	},
+	block/.style={
+		draw,
+		rectangle,
+		align=center,
+		minimum width=1cm,
+		execute at begin node=\strut
+	}
+]
+
+	\node[block, rounded corners=3pt](SMG){\strut SMG};
+	
+	\node[block, right=2.5 of SMG](GTE){GTE};
+	
+	\node[block, above=2 of SMG, rounded corners=3pt](hardware){Hardware};
+	
+	\node[block, above=2 of GTE](software){Software};
+	
+	\node[block, right=1.5 of GTE](GSE){GSE};
+	
+	\node[block, fill=orange!50,  right=1.5 of GSE , minimum height=3.5cm,
+	minimum width=1.5cm](GLO){\strut GLO};
+	
+	\node[block, right=1.5cm of GLO, minimum height=2.5cm,
+	minimum width=1.5cm](EMO){EMO};
+	
+	\node[block, above=0.8cm of EMO, fill opacity=0, draw opacity=0](GLS){GLS};
+	
+	
+	% Pfeil von SMG zu GSE
+	\draw[-stealth] (SMG.270) -- +(0,-0.4) -| (GSE.240) node[pos=0.25, below]
+	{$I$, $U$, $\cos\varphi $};
+	
+	\draw[-stealth] (SMG.east) -- (GTE.west) node[pos=0.5, below]
+	{$I$, $U$, $\cos\varphi $};
+	
+	\draw[-stealth] (GTE.east) -- (GSE.west) node[pos=0.5, below]
+	{$\bm{Y}$};
+	
+	\draw[dashed, -stealth] (GTE.north) |- (GLO.135) node[pos=0.75, above]
+	{$\bm{Y}$};
+	
+	\draw[dashed, -stealth] (GSE.east) -- (GLO.west) node[pos=0.5, below]
+	{$I^\mathsf{HH}$};
+	
+	\draw[dashed, -stealth] (GLO.225) -| (GSE.300)
+	node[pos=0.25, below]{$I^\mathsf{BEV}$};
+	
+%	\draw[-stealth] (EMO.135) -- (GLO.45) node[pos=0.5, above]
+%	{$U^\mathrm{Knoten}$};
+
+	\draw[-stealth] (EMO.135) -- (EMO.135 -| GLO.east)
+	node[pos=0.5, above]{$U^\mathsf{Knoten}$};
+	
+	\draw[-stealth] (GLO.315) -- (EMO.225) node[pos=0.5, above]
+	{$I^\mathsf{BEV}$};
+	
+	\draw[-stealth] (GLS.west) -| (GLO.north) node[pos=0.25, above]
+	{Szenarien};
+	
+	\begin{pgfonlayer}{background}
+		\path(GLO.south west)+(-0.2,-0.8) node (helper-a){};
+		\path(GLO.north -| EMO.east)+(0.2,1.3) node (helper-b){};
+		\path[fill=yellow!20, rounded corners, draw=black!50, dashed]
+		(helper-a) rectangle (helper-b);
+	\end{pgfonlayer}
+	
+	\node at ($($(helper-a) !0.5! (helper-b)$) - (0,2.5)$){Teil dieser Arbeit};
+
+\end{tikzpicture}

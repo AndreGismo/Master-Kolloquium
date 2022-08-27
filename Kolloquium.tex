@@ -1,0 +1,183 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Präsi für Kolloquium
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage[ngerman]{babel}
+\usepackage{fontspec}
+\usepackage{microtype}
+\usepackage{selnolig}
+\usepackage{csquotes}
+\usepackage{bm}
+\usepackage{soul}
+\usepackage{booktabs}
+\usepackage{mwe}
+\usepackage[style=ieee, backend=biber]{biblatex}
+\usepackage{tikz}
+\usetikzlibrary{
+	positioning,
+	calc,
+}
+\usepackage{listings}
+
+
+\graphicspath{{img/}}
+
+
+\addbibresource{refs.bib}
+
+
+\hypersetup{
+	pdfauthor={André Ulrich},
+	pdftitle={Kolloquium zur Masterarbeit},
+}
+
+
+\lstset{
+	basicstyle=\ttfamily,
+	morekeywords={
+		{\verb|\begin|},
+		\textbackslash end,
+		\textbackslash documentclass,
+	},
+	keywordstyle=\color{blue},
+	frame=single,
+}
+
+
+\newcommand*{\param}[1]{$\langle$\textit{\ttfamily #1}$\rangle$}
+\newcommand*{\tb}{\textbackslash}
+
+\makeatletter
+    \newenvironment{withoutheadline}{
+        \setbeamertemplate{headline}[default]
+        \def\beamer@entrycode{\vspace*{-\headheight}}
+    }{}
+\makeatother
+
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background, main}
+
+
+\usetheme{frankfurt}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+
+
+\begin{document}
+\author{André Ulrich}
+\title{Algorithmus zur optimierten Ladung von Elektrofahrzeugen in einem
+gemeinsamen Netzzweig}
+\subtitle{Master Kolloquium}
+\date{
+	\today\bigskip
+	
+	\begin{tabular}{@{}ll@{}}
+	Betreuer: & Prof.\,Dr. Eberhard Waffenschmidt \\
+	Ko-Referent: & Prof.\,Dr. Ingo Stadler \\
+	\end{tabular}
+}
+\titlegraphic{
+	\pgfputat{\pgfxy(6,0.4)}{
+		\includegraphics[scale=0.05]{TH_Koeln_Logo.pdf}
+	}
+}
+
+
+\setbeamertemplate{footline}[default]
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]
+	\maketitle
+\end{frame}
+\end{withoutheadline}
+
+
+%\setbeamertemplate{footline}[frame number]
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Inhalt}
+	\tableofcontents
+\end{frame}
+\end{withoutheadline}
+
+
+\section{Hintergrund und Aufgabenstellung}
+\setbeamertemplate{footline}[frame number]
+
+\begin{frame}{Hintergrund}
+	\begin{itemize}[<+->]
+		\item PROGRESSUS-Projekt: weniger Netzüberlastung, mehr BEVs laden
+		\cite{noauthor_progressus_nodate}
+		\item Entwicklung von Optimierungsalgorithmen zur koordinierten Ladung 
+		von BEVs
+		\item Bestehende Lösungsansätze:
+		\begin{itemize}
+			\item GridTopologyEstimation (GTE) zum Bestimmen der Netztopologie
+			\item GridStateEstimation (GSE) zum Bestimmen des Netzzustands
+		\end{itemize}
+		\item \so{ABER:} Bisher nur eingeschränkte Ansätze zur Optimierung
+		wie \cite{iserloh2021} oder \cite{koese2022} vorhanden
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Hintergrund}
+	\begin{figure}
+		\centering
+		\input{tikz-picz/progressus-overview}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Aufgabenstellung}
+	\begin{enumerate}[<+->]
+		\item Entwicklung eines Optimierungsalgorithmus zur optimalen 
+		Koordination der Ladevorgänge von BEVs
+		\item Verknüpfung von Optimierung und Simulationsumgebung
+		\item Ermöglichen eines parallelen Betriebs von Optimierung und
+		Simulationsumgebung
+	\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Aufgabenstellung}
+	Der Optimierungsalgorithmus soll:
+	\begin{itemize}[<+(1)->]
+		\item Zunächst nur einzelne Netzstrahlen betrachten
+		\item Netzauslastung maximieren, um möglichst viele BEVs zu laden
+		\item Gleichzeitig jedoch Netzüberlastung verhindern
+		\item Nach Möglichkeit Diskriminierung beim Laden ausschließen
+		\item Automatisch skalieren mit dem betrachteten Netzstrahl
+		\item Auch auf einem Raspberry Pi in \enquote{vertretbarer} Zeit 
+		ausführbar sein
+	\end{itemize}
+	
+	\onslide<8>{
+		\begin{block}{also}
+			Einschränkungen bisheriger Arbeiten überwinden und 
+			\enquote{Gratwanderung vollführen}.
+		\end{block}
+	}
+\end{frame}
+
+\section{Theretische Umsetzung}
+
+\begin{frame}{Prinzip des Optimierungsalgorithmus}
+	\begin{figure}
+		\centering
+		\input{tikz-picz/input-output-optimization}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Optimierung mit Mathematical Programming}
+	bla
+\end{frame}
+
+
+\begin{frame}{Literatur}
+	\printbibliography
+\end{frame}
+
+\end{document}

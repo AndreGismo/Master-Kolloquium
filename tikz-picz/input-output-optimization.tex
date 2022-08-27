@@ -1,0 +1,84 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bild für die Input-/Output-Parameter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}[
+		block/.style={
+			font=\tiny,
+			draw,
+			rectangle,
+			minimum width={3.5cm}
+			}
+		]
+		\node[block](block0){\strut Haushaltslastprofile};
+		
+		\node[block,
+			below=0.3 of block0](block1){\strut Transformatorleistung};		
+		
+		\node[block,
+			below=0.2 of block1](block2){\strut Anzahl der Knoten};
+			
+		\node[block,
+			below=0.2 of block2](block3){\strut Anzahl Ladestationen};
+			
+		\node[block,
+			below=0.2 of block3](block4){\strut Leitungsimpedanzen};
+			
+		\node(gridtopology)[below=0.1 of block4]{\tiny\strut 
+		Netztopologie};
+			
+		\node[block,
+			below=0.3 of gridtopology](block5){\strut Start/Ziel SOC};
+			
+		\node[block,
+			below=0.2 of block5](block6){\strut Start/Ziel Zeit};
+			
+		\node(customer)[below=0.1 of block6]{\tiny\strut Kundenwünsche};
+			
+		\node[block,
+			below=0.3 of customer](block7){\strut Zeitliche Auflösung};
+			
+		\node[block,
+			below=0.2 of block7](block8){\strut Weite des Horizonts};
+			
+		\node(timespecs)[below=0.1 of block8]{\tiny\strut Zeitliche
+		Betrachtung};
+			
+		\node[block,
+			right=2 of gridtopology,
+			minimum height=5cm](GLO){GridLineOptimizer (GLO)};
+			
+		\node[block,
+			right=of GLO, align=left](res){Zeitreihen für \\ Ladestrom und 
+			SOC};
+			
+		
+		\draw[-stealth](block0.east) -- (GLO);
+		\draw[-stealth](block1.east) -- (GLO);
+		\draw[-stealth](block2.east) -- (GLO);
+		\draw[-stealth](block3.east) -- (GLO);
+		\draw[-stealth](block4.east) -- (GLO);
+		\draw[-stealth](block5.east) -- (GLO);
+		\draw[-stealth](block6.east) -- (GLO);
+		\draw[-stealth](block7.east) -- (GLO);
+		\draw[-stealth](block8.east) -- (GLO);
+		\draw[-stealth](GLO) -- (res);
+		
+		
+		\begin{pgfonlayer}{background}
+			\path(block1.west)+(-0.1, 0.4) node (a) {};
+			\path(block4.east)+(0.1, -0.9) node (b) {};
+			\path[fill=yellow!20, rounded corners, draw=black!50, dashed]
+			(a) rectangle (b);
+			
+			\path(block5.west)+(-0.1, 0.4) node (a) {};
+			\path(block6.east)+(0.1, -0.9) node (b) {};
+			\path[fill=red!20, rounded corners, draw=black!50, dashed]
+			(a) rectangle (b);
+			
+			\path(block7.west)+(-0.1, 0.4) node (a) {};
+			\path(block8.east)+(0.1, -0.9) node (b) {};
+			\path[fill=green!20, rounded corners, draw=black!50, dashed]
+			(a) rectangle (b);
+		\end{pgfonlayer}
+	\end{tikzpicture}
