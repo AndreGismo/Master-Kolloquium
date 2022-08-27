@@ -9,6 +9,7 @@
 \usepackage{microtype}
 \usepackage{selnolig}
 \usepackage{csquotes}
+\usepackage{amsmath, amssymb}
 \usepackage{bm}
 \usepackage{soul}
 \usepackage{booktabs}
@@ -161,7 +162,7 @@ gemeinsamen Netzzweig}
 	}
 \end{frame}
 
-\section{Theretische Umsetzung}
+\section{Thereotische Umsetzung}
 
 \begin{frame}{Prinzip des Optimierungsalgorithmus}
 	\begin{figure}
@@ -172,7 +173,51 @@ gemeinsamen Netzzweig}
 
 
 \begin{frame}{Optimierung mit Mathematical Programming}
-	bla
+	\begin{columns}
+		\begin{column}{.6\textwidth}
+			\begin{itemize}
+				\item Mathematical Programming als strukturierte 
+				Darstellungsweise eines Optimierungsproblems
+				\item Beschreibung mithilfe von Zielfunktion und Restriktionen
+				\item Formulierug als Linear Programmig
+			\end{itemize}
+		\end{column}
+		\begin{column}{.4\textwidth}
+			\begin{align*}
+				\begin{split}
+		\text{max.}\quad&\sum_{i\in\mathcal{I}}c_i\cdot x_i \\
+		\text{s.\,t.}\quad&\sum_{i\in\mathcal{I}}a_{j,i}\cdot x_i\leq b_j\quad
+		\forall j\in\mathcal{J} \\
+		& x_i\in\mathbb{R}_0^+\quad\forall i\in\mathcal{I}
+				\end{split}
+			\end{align*}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+
+\begin{frame}{Formulierung als Linear Programming}
+	\begin{description}
+		\item[Zielfunktion] Maximieren der der Ladeströme an allen Knoten zu 
+		jeweils allen Zeitpunkten
+		\item[Restriktion] Die Spannung am letzten Knoten darf nicht aus dem
+		Spannungsband fallen
+		\item[Restriktion] Der Transformator darf nicht überlastet werden
+		\item[Restriktion] Keine der Leitungen darf überlastet werden
+		\item[Restriktion] Energieerhaltung beim Laden
+	\end{description}
+	\begin{block}{$\dots$ und außerdem:}
+		4 Weitere Restriktionen \enquote{faires} Laden
+	\end{block}
+\end{frame}
+
+
+\begin{frame}{Formulierung als Linear Programming}
+	Die Zielfunktion: Maximieren der Ladeströme zu allen Zeitpunkten
+	\begin{equation*}
+		\text{max.}\quad\sum_{t\in\mathcal{T}}\bigg(\sum_{n\in
+		\mathcal{N_\mathsf{BEV}}}\!\!I^\mathsf{BEV}_{t,n}\bigg)
+	\end{equation*}
 \end{frame}
 
 

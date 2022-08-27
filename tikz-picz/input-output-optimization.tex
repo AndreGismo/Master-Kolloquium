@@ -10,10 +10,9 @@
 			minimum width={3.5cm}
 			}
 		]
-		\node[block](block0){\strut Haushaltslastprofile};
+		%\node[block](block0){\strut Haushaltslastprofile};
 		
-		\node[block,
-			below=0.3 of block0](block1){\strut Transformatorleistung};		
+		\node[block](block1){\strut Transformatorleistung};		
 		
 		\node[block,
 			below=0.2 of block1](block2){\strut Anzahl der Knoten};
@@ -21,10 +20,10 @@
 		\node[block,
 			below=0.2 of block2](block3){\strut Anzahl Ladestationen};
 			
-		\node[block,
-			below=0.2 of block3](block4){\strut Leitungsimpedanzen};
+%		\node[block,
+%			below=0.2 of block3](block4){\strut Leitungsimpedanzen};
 			
-		\node(gridtopology)[below=0.1 of block4]{\tiny\strut 
+		\node(gridtopology)[below=0.1 of block3]{\tiny\strut 
 		Netztopologie};
 			
 		\node[block,
@@ -45,19 +44,22 @@
 		Betrachtung};
 			
 		\node[block,
-			right=2 of gridtopology,
-			minimum height=5cm](GLO){GridLineOptimizer (GLO)};
+			right=2 of block5, align=center,
+			minimum height=5cm](GLO){GridLineOptimizer\\ (GLO)};
 			
 		\node[block,
 			right=of GLO, align=left](res){Zeitreihen für \\ Ladestrom und 
 			SOC};
 			
+		\node[block,
+			below=0.5 of GLO](block0){\strut Haushaltslastprofile};
+			
 		
-		\draw[-stealth](block0.east) -- (GLO);
+		\draw[-stealth](block0.north) -- (GLO);
 		\draw[-stealth](block1.east) -- (GLO);
 		\draw[-stealth](block2.east) -- (GLO);
 		\draw[-stealth](block3.east) -- (GLO);
-		\draw[-stealth](block4.east) -- (GLO);
+		%\draw[-stealth](block4.east) -- (GLO);
 		\draw[-stealth](block5.east) -- (GLO);
 		\draw[-stealth](block6.east) -- (GLO);
 		\draw[-stealth](block7.east) -- (GLO);
@@ -67,7 +69,7 @@
 		
 		\begin{pgfonlayer}{background}
 			\path(block1.west)+(-0.1, 0.4) node (a) {};
-			\path(block4.east)+(0.1, -0.9) node (b) {};
+			\path(block3.east)+(0.1, -0.9) node (b) {};
 			\path[fill=yellow!20, rounded corners, draw=black!50, dashed]
 			(a) rectangle (b);
 			
