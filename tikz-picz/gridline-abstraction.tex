@@ -1,0 +1,77 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bild für die Netzstrang
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}[node/.style={fontsize=\scriptsize}]
+	% Koordinaten der wichtigen Punkte
+	\coordinate (TrafoHi) at (0,0);
+	\coordinate (TrafoLo) at (0.3,0);
+	\coordinate (LineStart) at (0.7,0);
+	\coordinate (LineEnd) at (5,0);
+	\coordinate (SecLineStart) at (7,0);
+	\coordinate (SecLineEnd) at (10,0);
+	% Knoten
+	\coordinate (Node1) at (2,0);
+	\coordinate (Node2) at (4,0);
+	\coordinate (Node3) at (8,0);
+	\coordinate (Node4) at (10,0);
+	% Leitungen (deren Beschriftung)
+	\coordinate (FirstLineAnchor) at (1,0);
+	\coordinate (SecondLineAnchor) at ($(Node1)!.5!(Node2)$);
+	\coordinate (ThirdLineAnchor) at ($(Node2)!.25!(Node3)$);
+	\coordinate (FourthLineAnchor) at ($(Node2)!.75!(Node3)$);
+	\coordinate (FifthLineAnchor) at ($(Node3)!.5!(Node4)$);
+	
+	% unten der abstrakte Netzstrahl
+	\draw (TrafoHi) circle(4mm);
+	\draw (TrafoLo) circle(4mm);
+	\draw (LineStart) -- (LineEnd);
+	\draw (SecLineStart) -- (SecLineEnd);
+	\draw[dashed] (LineEnd) -- (SecLineStart);
+	% und alle Knoten
+	\fill (Node1) circle(0.5mm) node[above]{$n_1$};
+	\fill (Node2) circle(0.5mm) node[above]{$n_2$};
+	\fill (Node3) circle(0.5mm) node[above]{$n_{n-1}$};
+	\fill (Node4) circle(0.5mm) node[above]{$n_n$};
+	% sowie alle Leitungen
+	\node[below] at (FirstLineAnchor) {$l_1$};
+	\node[below] at (SecondLineAnchor) {$l_2$};
+	\node[below] at (ThirdLineAnchor) {$l_3$};
+	\node[below] at (FourthLineAnchor) {$l_{n-1}$};
+	\node[below] at (FifthLineAnchor) {$l_n$};
+	
+	% oben der spezielle Netzstrahl
+	\draw ($(TrafoHi)+(0,3)$) circle(4mm);
+	\draw ($(TrafoLo)+(0,3)$) circle(4mm);
+	\draw ($(LineStart)+(0,3)$) -- ($(LineEnd)+(0,3)$);
+	\draw ($(SecLineStart)+(0,3)$) -- ($(SecLineEnd)+(0,3)$);
+	\draw[dashed] ($(LineEnd)+(0,3)$) -- ($(SecLineStart)+(0,3)$);
+	% und alle Knoten
+	\draw[ultra thick] ($(Node1)+(0,3.4)$) -- ($(Node1)+(0,2.6)$);
+	\draw[ultra thick] ($(Node2)+(0,3.4)$) -- ($(Node2)+(0,2.6)$);
+	\draw[ultra thick] ($(Node3)+(0,3.4)$) -- ($(Node3)+(0,2.6)$);
+	\draw[ultra thick] ($(Node4)+(0,3.4)$) -- ($(Node4)+(0,2.6)$);
+	% Abzweige zu den jeweiligen Lasten
+	\draw[-stealth] ($(Node1)+(0,3)$) -- +(0.5,-0.5) -- +(0.5,-1) node[below]
+	{$I_1$};
+	\draw[-stealth] ($(Node2)+(0,3)$) -- +(0.5,-0.5) -- +(0.5,-1) node[below]
+	{$I_2$};
+	\draw[-stealth] ($(Node3)+(0,3)$) -- +(0.5,-0.5) -- +(0.5,-1) node[below]
+	{$I_{n-1}$};
+	\draw[-stealth] ($(Node4)+(0,3)$) -- +(0.5,-0.5) -- +(0.5,-1) node[below]
+	{$I_n$};
+	\node[above] at ($(FirstLineAnchor)+(0,3)$) {$Z_1$};
+	\node[above] at ($(SecondLineAnchor)+(0,3)$) {$Z_2$};
+	\node[above] at ($(ThirdLineAnchor)+(0,3)$) {$Z_3$};
+	\node[above] at ($(FourthLineAnchor)+(0,3)$) {$Z_{n-1}$};
+	\node[above] at ($(FifthLineAnchor)+(0,3)$) {$Z_n$};
+	% Spannungen an den Knoten
+	\draw[-stealth] ($(Node1)+(-0.1,2.9)$) .. controls +(-0.5,-0.5) .. +(0,-1)
+	node[left]{$U_1$};
+	\draw[-stealth] ($(Node2)+(-0.1,2.9)$) .. controls +(-0.5,-0.5) .. +(0,-1)
+	node[left]{$U_2$};
+	\draw[-stealth] ($(Node3)+(-0.1,2.9)$) .. controls +(-0.5,-0.5) .. +(0,-1)
+	node[left]{$U_{n-1}$};
+	\draw[-stealth] ($(Node4)+(-0.1,2.9)$) .. controls +(-0.5,-0.5) .. +(0,-1)
+	node[left]{$U_n$};
+\end{tikzpicture}

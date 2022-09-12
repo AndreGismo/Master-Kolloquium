@@ -76,7 +76,7 @@
 gemeinsamen Netzzweig}
 \subtitle{Master Kolloquium}
 \date{
-	\today\bigskip
+	21. September 2022\bigskip
 	
 	\begin{tabular}{@{}ll@{}}
 	Betreuer: & Prof.\,Dr. Eberhard Waffenschmidt \\
@@ -110,7 +110,7 @@ gemeinsamen Netzzweig}
 \setbeamertemplate{footline}[frame number]
 
 \begin{frame}{Hintergrund}
-	\begin{itemize}[<+->]
+	\begin{itemize}
 		\item PROGRESSUS-Projekt: weniger Netzüberlastung, mehr BEVs laden
 		\cite{noauthor_progressus_nodate}
 		\item Entwicklung von Optimierungsalgorithmen zur koordinierten Ladung 
@@ -135,7 +135,7 @@ gemeinsamen Netzzweig}
 
 
 \begin{frame}{Aufgabenstellung}
-	\begin{enumerate}[<+->]
+	\begin{enumerate}
 		\item Entwicklung eines Optimierungsalgorithmus zur optimalen 
 		Koordination der Ladevorgänge von BEVs
 		\item Verknüpfung von Optimierung und Simulationsumgebung
@@ -147,7 +147,7 @@ gemeinsamen Netzzweig}
 
 \begin{frame}{Aufgabenstellung}
 	Der Optimierungsalgorithmus soll:
-	\begin{itemize}[<+(1)->]
+	\begin{itemize}
 		\item Zunächst nur einzelne Netzstrahlen betrachten
 		\item Netzauslastung maximieren, um möglichst viele BEVs zu laden
 		\item Gleichzeitig jedoch Netzüberlastung verhindern
@@ -157,7 +157,7 @@ gemeinsamen Netzzweig}
 		ausführbar sein
 	\end{itemize}
 	
-	\onslide<8>{
+	\onslide<2>{
 		\begin{block}{also}
 			Einschränkungen bisheriger Arbeiten überwinden und 
 			\enquote{Gratwanderung vollführen}.
@@ -175,14 +175,43 @@ gemeinsamen Netzzweig}
 \end{frame}
 
 
+\begin{frame}{Getroffene Annahmen}
+	\begin{itemize}
+		\item Nur Verbraucher im Netzstrahl
+		\item Nur ohmschen Anteil der Leistungsimpedanzen berücksichtigen
+		\item Hausanschlussleitungen vernachlässigen
+	\end{itemize}
+	
+	\onslide<2>{
+		\begin{block}{Vereinfachte Darstellung}
+			\begin{itemize}
+				\item Hinreichende Beschreibung des Netzstrahls durch
+				eine Reihe von Widerständen
+				\item Betrachtung der Spannung am letzten Knoten ausreichend
+			\end{itemize}
+		\end{block}
+	}
+\end{frame}
+
+
+\begin{frame}{Generischer Netzstrahl}
+	Aus den getroffenen Vereinfachungen resultierender, generischer Netzstrahl:
+	\vspace{1cm}
+	
+	\begin{figure}
+		\input{tikz-picz/gridline-abstraction}
+	\end{figure}
+\end{frame}
+
+
 \begin{frame}{Optimierung mit Mathematical Programming}
 	\begin{columns}
 		\begin{column}{.6\textwidth}
 			\begin{itemize}
 				\item Mathematical Programming als strukturierte 
 				Darstellungsweise eines Optimierungsproblems
-				\item Beschreibung mithilfe von Zielfunktion und Restriktionen
 				\item Formulierug als Linear Programmig
+				\item Lösung mithilfe von geeignetem Solver
 			\end{itemize}
 		\end{column}
 		\begin{column}{.4\textwidth}
@@ -199,34 +228,152 @@ gemeinsamen Netzzweig}
 \end{frame}
 
 
-\begin{frame}{Formulierung als Linear Programming}
-	\begin{description}[<+->]
-		\item[Zielfunktion] Maximieren der der Ladeströme an allen Knoten zu 
-		jeweils allen Zeitpunkten
-		\item[Restriktion] Die Spannung am letzten Knoten darf nicht aus dem
-		Spannungsband fallen
-		\item[Restriktion] Der Transformator darf nicht überlastet werden
-		\item[Restriktion] Keine der Leitungen darf überlastet werden
-		\item[Restriktion] Energieerhaltung beim Laden
+\begin{frame}{Grundbausteine eines Mathematical Programming}
+	\begin{description}[Restriktionen]
+		\item[Sets] zum indexieren der restlichen Bestandteile
+		\item[Parameter] als festgelegte Größen (beeinflussen Optimierung)
+		\item[Variablen] als zu bestimmende, variable Größen
+		\item[Zielfunktion] in Abhängigkeit der Variablen (zu minimieren oder
+		maximieren)
+		\item[Restriktionen] zum Einschränken der möglichen Lösungsmenge
 	\end{description}
-	\onslide<6>{
-		\begin{block}{$\dots$ und außerdem:}
-			4 Weitere Restriktionen für \enquote{faires} Laden
+	
+	\onslide<2>{
+		\begin{block}{Ziel}
+			Variablen so bestimmen, dass Zielfunktion maximiert/minimiert wird
 		\end{block}
 	}
 \end{frame}
 
 
-\begin{frame}{Rolling Horizon für große Optimierungsprobleme}
-	\begin{itemize}[<+->]
-		\item Großer Zeithorizont, zu dem ein großes Optimierungsproblem
-		korrespondiert
-		\item Großen Zeithorizont zerlegen in mehrere kleine Horizonte
-		\item Die zu den einzelnen Horizonten korrespondierenden 
-		Optimierungsprobleme lösen
-		\item Die Gesamtlösung ergibt sich aus den einzelnen Teillösungen
+\begin{frame}{Formulierung als Linear Programming}
+	\begin{Large}
+		Sets:
+	\end{Large}
+	\begin{itemize}
+		\item Menge aller Knoten: $\mathcal{N}=\{n_1, n_2,\dots,n_n\}$
+		\item Menge aller Leitungen: $\mathcal{L}=\{l_1,l_2,\dots,l_n\}$
+		\item Menge aller Koten mit Ladesäule und BEV:
+		$\mathcal{N}_\mathsf{BEV}\subset\mathcal{N}$
+		\item Menge aller Zeitschritte: $\mathcal{T}=\{t_1,t_2,\dots,t_n\}$
 	\end{itemize}
+	\onslide<2>{
+		\begin{block}{Weil:}
+			Alle relevanten Größen lassen sich in den Sets indexieren
+		\end{block}
+	}
 \end{frame}
+
+
+\begin{frame}{Formulierung als Linear Programming}
+	\begin{Large}
+		Parameter:
+	\end{Large}
+	\begin{itemize}
+		\item Leitungsimpedanzen: $Z_l\quad\forall l\in\mathcal{L}$
+		\item Knotenspannungen: $U_n\quad\forall n\in\mathcal{N}$
+		\item Haushaltsströme:
+		$I^\mathsf{HH}_{t,n}\quad\forall t,n\in\mathcal{T}\times\mathcal{N}$
+		\item Start SOCs der BEVs:
+		$SOC^\mathsf{Start}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
+		\item Ziel SOCs der BEVs:
+		$SOC^\mathsf{Ziel}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
+		\item $\dots$
+	\end{itemize}
+	\onslide<2>{
+		\begin{block}{Weil:}
+			Festgelegte Größen, die das Ergebnis der Optimierung beeinflussen
+		\end{block}
+	}
+\end{frame}
+
+
+\begin{frame}{Formulierung als Linear Programming}
+	\begin{Large}
+		Variablen:
+	\end{Large}
+	\begin{itemize}
+		\item Ladeströme der BEVs:
+		$I^\mathsf{BEV}_{t,n}\quad\forall t,n\in\mathcal{T}\times
+		\mathcal{N}_\mathsf{BEV}$
+		\item SOCs der BEVs:
+		$SOC_\mathsf{t,n}\quad\forall t,n\in\mathcal{T}\times
+		\mathcal{N}_\mathsf{BEV}$
+	\end{itemize}
+	\onslide<2>{
+		\begin{block}{Weil:}
+			Das sind die von der Optimierung zu bestimmenden Größen
+		\end{block}
+	}
+\end{frame}
+
+
+\begin{frame}{Formulierung als Linear Programming}
+	\begin{Large}
+		Zielfunktion:
+	\end{Large}
+	
+	Maximieren der Ladeströme:
+	\begin{equation*}
+		\mathsf{max.}\quad \sum_{t\in\mathcal{T}}\Big(\sum_{n\in
+		\mathcal{N}_\mathsf{BEV}}\!\!I^\mathsf{BEV}_{t,n}\Big)
+	\end{equation*}
+	\onslide<2>{
+		\begin{block}{Weil:}
+			Das ist das Ziel der Optimierung
+		\end{block}
+	}
+\end{frame}
+
+
+\begin{frame}{Formulierung als Linear Programming}
+	\begin{Large}
+		Restriktionen:
+	\end{Large}
+	\begin{itemize}
+		\item Spannung am letzten Knoten darf nicht zu tief sinken
+		\item Der Transformator darf nicht überlastet werden
+		\item Keine der Leitungen darf überlastet werden
+		\item Beim Laden der BEVs muss Energieerhaltung gelten
+		\item 4 weitere, optionale Restriktionen für \enquote{faires} Laden
+	\end{itemize}
+	\onslide<2>{
+		\begin{block}{Weil:}
+			Erst hierdurch wird die Optimierung begrenzt
+		\end{block}
+	}
+\end{frame}
+
+
+%\begin{frame}{Formulierung als Linear Programming}
+%	\begin{description}
+%		\item[Zielfunktion] Maximieren der Ladeströme an allen Knoten zu 
+%		jeweils allen Zeitpunkten
+%		\item[Restriktion] Die Spannung am letzten Knoten darf nicht aus dem
+%		Spannungsband fallen
+%		\item[Restriktion] Der Transformator darf nicht überlastet werden
+%		\item[Restriktion] Keine der Leitungen darf überlastet werden
+%		\item[Restriktion] Energieerhaltung beim Laden
+%	\end{description}
+%	
+%	\onslide<2>{
+%		\begin{block}{$\dots$ und außerdem:}
+%			4 Weitere Restriktionen für \enquote{faires} Laden
+%		\end{block}
+%	}
+%\end{frame}
+%
+%
+%\begin{frame}{Rolling Horizon für große Optimierungsprobleme}
+%	\begin{itemize}
+%		\item Großer Zeithorizont, zu dem ein großes Optimierungsproblem
+%		korrespondiert
+%		\item Großen Zeithorizont zerlegen in mehrere kleine Horizonte
+%		\item Die zu den einzelnen Horizonten korrespondierenden 
+%		Optimierungsprobleme lösen
+%		\item Die Gesamtlösung ergibt sich aus den einzelnen Teillösungen
+%	\end{itemize}
+%\end{frame}
 
 
 \begin{frame}{Rolling Horizon für große Optimierungsprobleme}
@@ -242,7 +389,7 @@ gemeinsamen Netzzweig}
 \begin{frame}{Optimierungsprobleme mit Python lösen}
 	\begin{itemize}
 		\item Python als Programmiersprache
-		\item Pyomo als Optimierungsframework
+		\item pyomo als Optimierungsframework
 		\item glpk als Solver
 	\end{itemize}
 \end{frame}
@@ -250,14 +397,14 @@ gemeinsamen Netzzweig}
 
 \begin{frame}{Aufbau der Software zur Optimierung}
 	Mehrere Klassen:
-	\begin{itemize}[<+(1)->]
+	\begin{itemize}
 		\item Eigene Klasse \texttt{GridLineOptimizer} für Netzstrahl und 
 		Logik der Optimierung
 		\item Eigene Klasse \texttt{BatteryElectricVehicle} für BEVs
 		\item Eigene Klasse \texttt{Household} für Haushaltslasten
 	\end{itemize}
 	
-	\onslide<5->{
+	\onslide<2>{
 		\begin{block}{Modularer Aufbau}
 			Bessere Wartbarkeit und Portabilität
 		\end{block}
@@ -273,10 +420,22 @@ gemeinsamen Netzzweig}
 \end{frame}
 
 
+\begin{frame}{Schnittstelle zwischen Optimierung und Simulationsumgebung}
+	\begin{itemize}
+		\item Bisher liefert der Optimierungsalgorithmus nur optimierte
+		Ladeströme
+		\item Mithilfe der Simulationsumgebung können die Ergebnisse
+		der Optimierung validiert werden
+		\item Hierzu wird eine Schnittstelle zwischen Optimierung und
+		Simulationsumgebung geschaffen
+	\end{itemize}
+\end{frame}
+
+
 \section{Ergebnisse}
 
 \begin{frame}{Untersuchung anhand von Szenarien}
-	\begin{itemize}[<+->]
+	\begin{itemize}
 		\item Definieren unterschiedlicher Szenarien
 		\begin{itemize}
 			\item Transformatorleistung
@@ -290,10 +449,35 @@ gemeinsamen Netzzweig}
 \end{frame}
 
 
+\begin{frame}{Festlegen von Bewertungskriterien}
+	\begin{itemize}
+		\item Kriterien der Netzstabilität
+		\begin{itemize}
+			\item Auslastung des Transformators
+			\item Auslastung der Leitungen
+			\item Spannung am letzten Knoten
+		\end{itemize}
+		\item Kundenwünsche erfüllen
+		\item \enquote{Faires} Laden ermöglichen
+	\end{itemize}
+\end{frame}
+
+
 \section{Fazit}
 
 \begin{frame}{Fazit}
-	bla bla
+	Punkt 1 der Aufgabenstellung:
+	\begin{itemize}
+		\item Skalierbaren Optimierungsalgorithmus entwickelt
+		\item Ausführbarkeit auf Raspberry Pi demonstriert
+		\item Optimierung allgemeiner Netztopologien muss noch umgesetzt werden
+	\end{itemize}
+	Punkt 2 der Aufgabenstellung:
+	\begin{itemize}
+		\item Schnittstelle zwischen Optimierung und Simulationsumgebung
+		geschaffen
+		\item Sinnhaftigkeit der Ergebnisse der Optimierung validiert
+	\end{itemize}
 \end{frame}
 
 

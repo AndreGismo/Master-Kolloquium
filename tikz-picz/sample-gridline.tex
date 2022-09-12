@@ -1,0 +1,34 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bild für beispielhaften Netzstrang mit 3 Knoten und 2 Ladesäulen
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}
+	\coordinate (TrafoHi) at (0,0);
+	\coordinate (TrafoLo) at (0.3,0);
+	\coordinate (LineStart) at (0.7,0);
+	\coordinate (LineEnd) at (9.7,0);
+	\coordinate (Node1) at (3.7,0);
+	\coordinate (Node2) at (6.7,0);
+	
+	\draw (TrafoHi) circle(4mm);
+	\draw (TrafoLo) circle(4mm);
+	
+	\draw (LineStart) -- (LineEnd);
+	\draw[ultra thick] ($(Node1)+(0,0.4)$) -- ($(Node1)+(0,-.4)$);
+	\draw[ultra thick] ($(Node2)+(0,0.4)$) -- ($(Node2)+(0,-.4)$);
+	\draw[ultra thick] ($(LineEnd)+(0,0.4)$) -- ($(LineEnd)+(0,-.4)$);
+	
+	\foreach \coord in {(Node1),(Node2),(LineEnd)}{
+		\draw \coord -- ++(.5,-.5) -- ++(0,-2)
+		++(-.5,-.5) rectangle ++(1,1) -- ++(-.5,.5) -- ++(-.5,-.5);
+			
+	}
+	
+	\foreach \coord in {(Node1),(LineEnd)}{
+		\draw[ultra thick] \coord  ++(.5,-.5)  ++(0,-2)  ++(-.4,0) -- ++(.8,0)
+		++(-.4,0);
+		\draw \coord  ++(.5,-.5)  ++(0,-2)  ++(-.4,0)  ++(.8,0)
+		++(-.4,0) -- ++(0,-.25) -- ++(1,0) ++(-.2,-.25) rectangle ++(.4,.75);
+	}
+
+\end{tikzpicture}
