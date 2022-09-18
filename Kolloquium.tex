@@ -239,7 +239,7 @@ gemeinsamen Netzzweig}
 	\end{description}
 	
 	\onslide<2>{
-		\begin{block}{Ziel}
+		\begin{block}{Ziel:}
 			Variablen so bestimmen, dass Zielfunktion maximiert/minimiert wird
 		\end{block}
 	}
@@ -257,11 +257,11 @@ gemeinsamen Netzzweig}
 		$\mathcal{N}_\mathsf{BEV}\subset\mathcal{N}$
 		\item Menge aller Zeitschritte: $\mathcal{T}=\{t_1,t_2,\dots,t_n\}$
 	\end{itemize}
-	\onslide<2>{
-		\begin{block}{Weil:}
-			Alle relevanten Größen lassen sich in den Sets indexieren
-		\end{block}
-	}
+%	\onslide<2>{
+%		\begin{block}{Weil:}
+%			Alle relevanten Größen lassen sich in den Sets indexieren
+%		\end{block}
+%	}
 \end{frame}
 
 
@@ -280,11 +280,11 @@ gemeinsamen Netzzweig}
 		$SOC^\mathsf{Ziel}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
 		\item $\dots$
 	\end{itemize}
-	\onslide<2>{
-		\begin{block}{Weil:}
-			Festgelegte Größen, die das Ergebnis der Optimierung beeinflussen
-		\end{block}
-	}
+%	\onslide<2>{
+%		\begin{block}{Weil:}
+%			Festgelegte Größen, die das Ergebnis der Optimierung beeinflussen
+%		\end{block}
+%	}
 \end{frame}
 
 
@@ -300,70 +300,83 @@ gemeinsamen Netzzweig}
 		$SOC_\mathsf{t,n}\quad\forall t,n\in\mathcal{T}\times
 		\mathcal{N}_\mathsf{BEV}$
 	\end{itemize}
-	\onslide<2>{
-		\begin{block}{Weil:}
-			Das sind die von der Optimierung zu bestimmenden Größen
-		\end{block}
-	}
+%	\onslide<2>{
+%		\begin{block}{Weil:}
+%			Das sind die von der Optimierung zu bestimmenden Größen
+%		\end{block}
+%	}
 \end{frame}
 
 
 \begin{frame}{Formulierung als Linear Programming}
 	\begin{Large}
 		Zielfunktion:
-	\end{Large}
+	\end{Large}\vspace{.15cm}
 	
-	Maximieren der Ladeströme:
+	Maximieren der Ladeströme.
 	\begin{equation*}
 		\mathsf{max.}\quad \sum_{t\in\mathcal{T}}\Big(\sum_{n\in
 		\mathcal{N}_\mathsf{BEV}}\!\!I^\mathsf{BEV}_{t,n}\Big)
 	\end{equation*}
-	\onslide<2>{
-		\begin{block}{Weil:}
-			Das ist das Ziel der Optimierung
-		\end{block}
-	}
-\end{frame}
-
-
-\begin{frame}{Formulierung als Linear Programming}
-	\begin{Large}
-		Restriktionen:
-	\end{Large}
-	\begin{itemize}
-		\item Spannung am letzten Knoten darf nicht zu tief sinken
-		\item Der Transformator darf nicht überlastet werden
-		\item Keine der Leitungen darf überlastet werden
-		\item Beim Laden der BEVs muss Energieerhaltung gelten
-		\item 4 weitere, optionale Restriktionen für \enquote{faires} Laden
-	\end{itemize}
-	\onslide<2>{
-		\begin{block}{Weil:}
-			Erst hierdurch wird die Optimierung begrenzt
-		\end{block}
-	}
-\end{frame}
-
-
-%\begin{frame}{Formulierung als Linear Programming}
-%	\begin{description}
-%		\item[Zielfunktion] Maximieren der Ladeströme an allen Knoten zu 
-%		jeweils allen Zeitpunkten
-%		\item[Restriktion] Die Spannung am letzten Knoten darf nicht aus dem
-%		Spannungsband fallen
-%		\item[Restriktion] Der Transformator darf nicht überlastet werden
-%		\item[Restriktion] Keine der Leitungen darf überlastet werden
-%		\item[Restriktion] Energieerhaltung beim Laden
-%	\end{description}
-%	
 %	\onslide<2>{
-%		\begin{block}{$\dots$ und außerdem:}
-%			4 Weitere Restriktionen für \enquote{faires} Laden
+%		\begin{block}{Weil:}
+%			Das ist das Ziel der Optimierung
 %		\end{block}
 %	}
-%\end{frame}
-%
-%
+\end{frame}
+
+
+\begin{frame}[t]{Formulierung als Linear Programming}
+	\vspace*{1cm}
+	
+	\begin{Large}
+		Restriktionen:
+	\end{Large}\vspace{.15cm}
+	
+	\only<1>{
+		Der Spannungsabfall am letzten Knoten darf nicht zu groß werden.
+		\begin{equation*}
+	U_0-\sum_{l\in\mathcal{L}}\bigg(Z_l\cdot\sum_{\substack{
+	n\in\mathcal{N}\\ n\geq l}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n}
+	\Big)\bigg)\geq U_\mathsf{min}\quad\forall t\in\mathcal{T}
+		\end{equation*}
+	}
+	
+	\only<2>{
+		Die Summe der Ströme darf nicht zu groß werden.
+		\begin{equation*}
+	\sum_{n\in\mathcal{N}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n} \Big)
+	\leq I_\mathsf{max}\quad\forall t\in\mathcal{T}
+		\end{equation*}
+	}
+	
+	\only<3>{
+		Die Ströme auf den einzelnen Leitungen dürfen jeweils nicht zu
+		groß werden.
+		\begin{equation*}
+	\sum_{\substack{n\in\mathcal{N}\\n\geq l}}\Big(I^\mathsf{HH}_{t,n}
+	+I^\mathsf{BEV}_{t,n} \Big)
+	\leq I^\mathsf{max}_l\quad\forall t,l\in\mathcal{T}\times\mathcal{L}
+		\end{equation*}
+	}
+	
+	\only<4>{
+		Die Energieerhaltung während des Ladevorgangs muss gewährleistet
+		sein.
+		\begin{equation*}
+	SOC_{t,n}+\frac{I^\mathsf{BEV}_{t,n}\cdot U_n\cdot\Delta t}{E_n}
+	\cdot 100\%=SOC_{t+1,n}\quad\forall t,n\in\mathcal{T}\times
+	\mathcal{N}_\mathsf{BEV}
+		\end{equation*}
+	}
+	
+	\only<5>{
+		Außerdem vier weitere, optionale Restriktionen für \enquote{faires}
+		Laden.
+	}
+\end{frame}
+
+
 %\begin{frame}{Rolling Horizon für große Optimierungsprobleme}
 %	\begin{itemize}
 %		\item Großer Zeithorizont, zu dem ein großes Optimierungsproblem
@@ -432,6 +445,11 @@ gemeinsamen Netzzweig}
 \end{frame}
 
 
+\begin{frame}{Funktionsprinzip der Schnittstelle}
+bla
+\end{frame}
+
+
 \section{Ergebnisse}
 
 \begin{frame}{Untersuchung anhand von Szenarien}
@@ -471,12 +489,17 @@ gemeinsamen Netzzweig}
 		\item Skalierbaren Optimierungsalgorithmus entwickelt
 		\item Ausführbarkeit auf Raspberry Pi demonstriert
 		\item Optimierung allgemeiner Netztopologien muss noch umgesetzt werden
-	\end{itemize}
+	\end{itemize}\vspace{.5cm}
 	Punkt 2 der Aufgabenstellung:
 	\begin{itemize}
 		\item Schnittstelle zwischen Optimierung und Simulationsumgebung
 		geschaffen
 		\item Sinnhaftigkeit der Ergebnisse der Optimierung validiert
+	\end{itemize}\vspace{.5cm}
+	Punkt 3 der Aufgabenstellung:
+	\begin{itemize}
+		\item Parallelisierung von Optimierung und Netzsimulation realisiert
+		\item bla
 	\end{itemize}
 \end{frame}
 
