@@ -1,0 +1,48 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ergebnisse Szenario 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}
+	\begin{axis}[%
+		height=6cm, 
+		xmin=-1,
+		xmax=25,
+		ymax=33,
+		ymin=-2,
+		grid=major,
+		legend style={
+			font=\scriptsize,
+			fill=white,
+			fill opacity=0.5,
+			draw opacity=1,
+			text opacity=1
+		},
+		legend entries={
+			{Knoten 1},
+			{Knoten 2},
+			{Knoten 3},
+			{Knoten 4},
+			{Knoten 5},
+			{Knoten 6},
+		},
+		no markers,
+		legend pos=north west,
+		ytick pos=left,
+		xtick pos=bottom,
+		xtick align=outside,
+		ytick align=outside,
+		ylabel style={overlay},
+		yticklabel style={overlay},
+		ylabel={Ladestrom der BEVs [A]},
+		xlabel={Uhrzeit [h]},
+	]
+
+		\foreach \col in {1,2,...,6}{
+			\addplot+[semithick, line join=round] table[
+				x=x,
+				y index=\col,
+				header=true,
+				] {plots/data/scen1/Is.dat};
+		}
+	\end{axis}
+\end{tikzpicture}

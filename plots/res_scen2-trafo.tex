@@ -1,0 +1,39 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ergebnisse Szenario 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}
+	\begin{axis}[%
+		height=6cm, 
+		xmin=-1,
+		xmax=25,
+		ymax=110,
+		ymin=-10,
+		grid=major,
+		legend style={
+			font=\scriptsize,
+			fill=white,
+			fill opacity=0.5,
+			draw opacity=1,
+			text opacity=1
+		},
+		no markers,
+		legend pos=north west,
+		ytick pos=left,
+		xtick pos=bottom,
+		xtick align=outside,
+		ytick align=outside,
+		ylabel style={overlay},
+		yticklabel style={overlay},
+		ylabel={Transformatorauslastung [\%]},
+		xlabel={Uhrzeit [h]},
+	]
+
+		\addplot+[semithick, line join=round, black] table[
+			x=x,
+			y=0,
+			header=true
+		]{plots/data/scen2/trafo-scen5.dat};
+		
+	\end{axis}
+\end{tikzpicture}

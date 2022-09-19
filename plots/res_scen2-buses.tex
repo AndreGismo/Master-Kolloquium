@@ -1,0 +1,42 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Ergebnisse Szenario 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}
+	\begin{axis}[%
+		height=6cm, 
+		xmin=-1,
+		xmax=25,
+		ymax=410,
+		ymin=355,
+		grid=major,
+		legend style={
+			font=\scriptsize,
+			fill=white,
+			fill opacity=0.5,
+			draw opacity=1,
+			text opacity=1
+		},
+		no markers,
+		legend pos=north west,
+		ytick pos=left,
+		xtick pos=bottom,
+		xtick align=outside,
+		ytick align=outside,
+		ylabel style={overlay},
+		yticklabel style={overlay},
+		ylabel={Knotenspannungen [V]},
+		xlabel={Uhrzeit [h]},
+	]
+
+		\foreach \col in {1,2,...,40}{
+			\addplot+[semithick, line join=round] table[
+				x=x,
+				y index=\col,
+				header=true,
+				] {plots/data/scen2/buses-scen5.dat};
+		}
+	\end{axis}
+		
+
+\end{tikzpicture}

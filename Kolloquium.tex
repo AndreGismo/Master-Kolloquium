@@ -15,13 +15,15 @@
 \usepackage{booktabs}
 \usepackage{mwe}
 \usepackage[style=ieee, backend=biber]{biblatex}
-\usepackage{tikz}
+%\usepackage{tikz}
+\usepackage{pgfplots}
 \usetikzlibrary{
 	positioning,
 	calc,
 	decorations.shapes,
 	decorations.pathmorphing,
 	decorations.pathreplacing,
+	pgfplots.groupplots,
 }
 \usepackage{listings}
 
@@ -30,6 +32,22 @@
 
 
 \addbibresource{refs.bib}
+
+
+\pgfplotscreateplotcyclelist{myLines}{%
+color=green, semithick\\
+color=blue, semithick\\
+color=magenta, semithick\\
+color=cyan, semithick\\
+color=red, semithick\\
+color=violet, semithick,\\
+}
+
+\pgfplotsset{%
+	compat=1.18,
+	width=.95\textwidth,
+	cycle list name=myLines,
+}
 
 
 \hypersetup{
@@ -501,7 +519,6 @@ gemeinsamen Netzzweig}
 			\item Anzahl Knoten
 			\item Position der Ladesäulen
 			\item Kundenwünsche
-			\item $\dots$
 		\end{itemize}
 		\item Optimierung ausführen
 		\item Ergebnisse mithilfe der Simulationsumgebung validieren
@@ -520,6 +537,88 @@ gemeinsamen Netzzweig}
 		\item Kundenwünsche erfüllen
 		\item \enquote{Faires} Laden ermöglichen
 	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Szenario 1}
+	\only<1>{
+		\begin{itemize}
+			\item 6 Knoten
+			\item 6 BEVs
+			\item 150\,kW Transformator
+			\item 23,8\;kW zusätzliche Lasten von 11 bis 19 Uhr
+		\end{itemize}
+	}
+	
+	\only<2>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen1-SOC}
+		\end{figure}
+	}
+	
+	\only<3>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen1-I}
+		\end{figure}
+	}
+	
+	\only<4>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen1-trafo}
+		\end{figure}
+	}
+	
+	\only<5>{
+		\begin{itemize}
+			\item Netzüberlastung verhindert
+			\item Transformator bedingt Lastverschiebung
+			\item Alle Kundenwünsche erfüllt
+		\end{itemize}
+	}
+\end{frame}
+
+
+\begin{frame}{Szenario 2}
+	\only<1>{
+		\begin{itemize}
+			\item 40 Knoten
+			\item 40 BEVs
+			\item 250\,kW Transformator
+			\item 3,2\;kW zusätzliche Lasten von 11 bis 19 Uhr
+		\end{itemize}
+	}
+	
+	\only<2>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen2-SOC}
+		\end{figure}
+	}
+	
+	\only<3>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen2-trafo}
+		\end{figure}
+	}
+	
+	\only<4>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen2-buses}
+		\end{figure}
+	}
+	
+	\only<5>{
+		\begin{itemize}
+			\item Netzüberlastung verhindert
+			\item Spannung am letzten Knoten bedingt Lastverschiebung
+			\item Nicht mehr alle Kundenwünsche erfüllt
+		\end{itemize}
+	}
 \end{frame}
 
 
