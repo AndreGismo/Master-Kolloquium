@@ -1,0 +1,50 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Prinzip der Parallelisierung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}[
+		block/.style={
+			font=\small,
+			draw,
+			rectangle,
+			minimum width={2.0cm},
+			minimum height={1.2cm},
+			align=center
+			}
+		]
+		
+		\node foreach \t in {1,3,5,7,9,11} 
+		[draw, block](o\t) at (\t,1.0){O};
+		
+		\node foreach \t in {1,...,24} 
+		[draw, block,
+		minimum width={0.5cm}](u\t) at ({\t*0.5-0.25},-1.0){S};
+		
+		\draw[-stealth](0,0)--(13,0) node[right] {\small t};
+		\draw[->](o1.south east)--(u4.north east);
+		\draw[->](o3.south east)--(u8.north east);
+		\draw[->](o5.south east)--(u12.north east);
+		\draw[->](o7.south east)--(u16.north east);
+		\draw[->](o9.south east)--(u20.north east);
+		
+		\draw (u1.south) edge[out=270, in=270, ->] (u2.south);
+		\draw (u2.south) edge[out=270, in=270, ->] (u3.south);
+		\draw (u3.south) edge[out=270, in=270, ->] (u4.south);
+		
+		\draw (u5.south) edge[out=270, in=270, ->] (u6.south);
+		\draw (u6.south) edge[out=270, in=270, ->] (u7.south);
+		\draw (u7.south) edge[out=270, in=270, ->] (u8.south);
+		
+		\node[below=0.01 of u9](dots){\tiny \dots};
+		
+		
+		\draw[-stealth](0,4.5)--(13,4.5) node[right] {\small t};
+		
+		\node foreach \t in {1,3.5,6,8.5,11}
+		[draw, block] at (\t,3.5){O};
+		
+		\node foreach \t in {2.25,4.75,7.25,9.75}
+		[draw, block,
+		minimum width={0.5cm}] at (\t,3.5){S};
+		
+	\end{tikzpicture}

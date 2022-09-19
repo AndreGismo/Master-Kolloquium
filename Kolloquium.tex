@@ -76,7 +76,7 @@
 gemeinsamen Netzzweig}
 \subtitle{Master Kolloquium}
 \date{
-	21. September 2022\bigskip
+	20. September 2022\bigskip
 	
 	\begin{tabular}{@{}ll@{}}
 	Betreuer: & Prof.\,Dr. Eberhard Waffenschmidt \\
@@ -405,6 +405,16 @@ gemeinsamen Netzzweig}
 		\item pyomo als Optimierungsframework
 		\item glpk als Solver
 	\end{itemize}
+	
+	\onslide<2>{
+		\begin{block}{Vorteile von pyomo:}
+			\begin{itemize}
+				\item Keine Begrenzung der Länge der Zielfunktion
+				\item Ermöglicht ein dynamisches Erzeugen des
+				Optimierungsmodells
+			\end{itemize}
+		\end{block}
+	}
 \end{frame}
 
 
@@ -446,7 +456,38 @@ gemeinsamen Netzzweig}
 
 
 \begin{frame}{Funktionsprinzip der Schnittstelle}
-bla
+	\begin{figure}
+		\centering
+		\input{tikz-picz/glo-emo-interface}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Paralellisierung von Optimierung und Simulationsumgebung}
+	\begin{itemize}
+		\item Bisher ist nur eine serielle Ausführung von Optimierung und
+		Simulationsumgebung möglich
+		\item Solange die Optimierung ausgeführt wird, kann nicht reagiert 
+		werden
+		\item Deshalb wird eine parallele Ausführung von Optimierung und
+		Simulationsumgebung realisiert
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Paralellisierung von Optimierung und Simulationsumgebung}
+	\begin{figure}
+		\centering
+		\input{tikz-picz/parallel-timeline}
+	\end{figure}
+\end{frame}
+
+
+\begin{frame}{Prinzip der Paralellisierung}
+	\begin{figure}
+		\centering
+		\input{tikz-picz/parallel-code}
+	\end{figure}
 \end{frame}
 
 
@@ -459,6 +500,7 @@ bla
 			\item Transformatorleistung
 			\item Anzahl Knoten
 			\item Position der Ladesäulen
+			\item Kundenwünsche
 			\item $\dots$
 		\end{itemize}
 		\item Optimierung ausführen
@@ -504,17 +546,22 @@ bla
 \end{frame}
 
 
-\begin{frame}{Literatur}
-	\printbibliography
+\section{}
+\setbeamertemplate{footline}[default]
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Literatur}
+	\printbibliography[heading=none]
 \end{frame}
+\end{withoutheadline}
 
-
-\begin{frame}{Formulierung als Linear Programming}
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Formulierung als Linear Programming}
 	Die Zielfunktion: Maximieren der Ladeströme zu allen Zeitpunkten
 	\begin{equation*}
 		\text{max.}\quad\sum_{t\in\mathcal{T}}\bigg(\sum_{n\in
 		\mathcal{N_\mathsf{BEV}}}\!\!I^\mathsf{BEV}_{t,n}\bigg)
 	\end{equation*}
 \end{frame}
+\end{withoutheadline}
 
 \end{document}

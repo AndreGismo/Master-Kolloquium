@@ -1,0 +1,35 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Schnttstelle GLO zu EMO
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}[
+	block/.style={
+		font=\scriptsize,
+		draw,
+		rectangle,
+		minimum width={3.5cm},
+		align=center,
+		}
+	]
+	
+	\node[block,
+		minimum height=6cm](GLO){Optimierer\\ \texttt{GridLineOptimizer}};
+		
+	\node[block,
+		right=6 of GLO,
+		minimum height=6cm](EMO){Simulationsumgebung\\ 
+		\texttt{Simulation\_Handler}};
+		
+	\draw[-stealth](GLO.55) -- node[auto] {\scriptsize Netztopologie 
+	exportiere} node[below]{}(EMO.125);
+		
+	\draw[-stealth](GLO.35) -- node[auto] {\scriptsize Haushalts-Profile 
+	exportieren} node[below]{} (EMO.145);
+		
+	\draw[-stealth](GLO.0) -- node[auto] {\scriptsize Ergebnis der Ströme
+	exportieren} node[below]{} (EMO.180);
+		
+	\draw[-stealth](EMO.215) -- node[above] {\scriptsize Ergebnis der 
+	Knotenspannungen exportieren} node[below]{} (GLO.325);
+
+\end{tikzpicture}
