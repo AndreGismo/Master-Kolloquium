@@ -1,0 +1,50 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Szenario 4: Vergleich der SOCs bei Regelung/Optimierung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}[every mark/.append style={mark size=1.5pt}]
+	\begin{axis}[
+		boxplot/draw direction=y,
+		xtick={1,2,3,4},
+		xticklabel style={align=center},
+		ylabel style={overlay},
+		yticklabel style={overlay},
+		xticklabels={
+			{optimiert\\ (unfair)},
+			{optimiert\\ (fair)},
+			{geregelt},
+			{normal},
+		},
+		height=6cm,
+		x axis line style={opacity=0},
+		xtick style={opacity=0},
+		ymajorgrids,
+		axis y line=left,
+		axis x line*=bottom,
+		align=center,
+		ylabel={Zielerreichung [\%]},
+		ymin=-5,
+		ymax=110
+	]
+	
+	\addplot+[boxplot, mark=*] table[
+		y index=1,
+		%row sep=\\,
+	]{plots/data/scen3/scen6-socs-fullfillment-opt-unfair.dat};
+	
+	\addplot+[boxplot, mark=*] table[
+		y index=1,
+		%row sep=\\,
+	]{plots/data/scen3/scen6-socs-fullfillment-opt-fair.dat};
+	
+	\addplot+[boxplot, mark=*] table[
+		y index=1,
+		%row sep=\\,
+	]{plots/data/scen3/scen6-socs-fullfillment-controlled.dat};	
+	
+	\addplot+[boxplot, mark=*] table[
+		y index=1,
+		%row sep=\\,
+	]{plots/data/scen3/scen6-socs-fullfillment-normal.dat};
+	\end{axis}
+\end{tikzpicture}

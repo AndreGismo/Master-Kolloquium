@@ -1,0 +1,28 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Szenario 3 (früher 5): detaillierten barplot für alle Knoten die Zielerreichu
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}
+	\begin{axis}[
+		ybar,
+		bar width=5pt,
+		height=6cm,
+		xmin=0.2,
+		xmax=40.8,
+		ymin=0,
+		ymax=110,
+		ymajorgrids,
+		xlabel={Knoten Nummer (1 direkt nach dem Transformator)},
+		ylabel={Zielerreichung [\%]},
+		ytick pos=left,
+		xtick pos=bottom,
+		ytick align=outside,
+		ylabel style={overlay},
+		yticklabel style={overlay},
+		]
+		\addplot table[
+			y index=1,
+			x index=0,
+		] {plots/data/scen2/scen5_socs_fullfillment.dat};
+	\end{axis}
+\end{tikzpicture}

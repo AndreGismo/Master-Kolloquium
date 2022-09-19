@@ -24,6 +24,7 @@
 	decorations.pathmorphing,
 	decorations.pathreplacing,
 	pgfplots.groupplots,
+	pgfplots.statistics,
 }
 \usepackage{listings}
 
@@ -47,6 +48,14 @@ color=violet, semithick,\\
 	compat=1.18,
 	width=.95\textwidth,
 	cycle list name=myLines,
+	legend style={
+			font=\scriptsize,
+			fill=white,
+			fill opacity=0.5,
+			draw opacity=1,
+			text opacity=1,
+			rounded corners=2pt,
+		},
 }
 
 
@@ -542,6 +551,7 @@ gemeinsamen Netzzweig}
 
 \begin{frame}{Szenario 1}
 	\only<1>{
+		Beschreibung:
 		\begin{itemize}
 			\item 6 Knoten
 			\item 6 BEVs
@@ -572,10 +582,11 @@ gemeinsamen Netzzweig}
 	}
 	
 	\only<5>{
+		Ergebnis:
 		\begin{itemize}
 			\item Netzüberlastung verhindert
 			\item Transformator bedingt Lastverschiebung
-			\item Alle Kundenwünsche erfüllt
+			\item Alle Kundenwünsche gleichmäßig erfüllt
 		\end{itemize}
 	}
 \end{frame}
@@ -583,6 +594,7 @@ gemeinsamen Netzzweig}
 
 \begin{frame}{Szenario 2}
 	\only<1>{
+		Beschreibung:
 		\begin{itemize}
 			\item 40 Knoten
 			\item 40 BEVs
@@ -613,6 +625,58 @@ gemeinsamen Netzzweig}
 	}
 	
 	\only<5>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen2-detailed-soc-fullfillments}
+		\end{figure}
+	}
+	
+	\only<6>{
+		Ergebnis:
+		\begin{itemize}
+			\item Netzüberlastung verhindert
+			\item Spannung am letzten Knoten bedingt Lastverschiebung
+			\item Nicht mehr alle Kundenwünsche gleichmäßig erfüllt
+		\end{itemize}
+	}
+\end{frame}
+
+
+\begin{frame}{Szenario 3}
+	\only<1>{
+		Beschreibung:
+		\begin{itemize}
+			\item 40 Knoten
+			\item 40 BEVs
+			\item 250\,kW Transformator
+			\item keine zusätzliche Laste
+			\item alle starten mit 10\;\% SOC und wollen 100\;\%
+		\end{itemize}
+	}
+	
+	\only<2>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen3-buses}
+		\end{figure}
+	}
+	
+	\only<3>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen3-trafo}
+		\end{figure}
+	}
+	
+	\only<4>{
+		\begin{figure}
+			\centering
+			\input{plots/res_scen3-fullfillments}
+		\end{figure}
+	}
+	
+	\only<5>{
+		Ergebnis:
 		\begin{itemize}
 			\item Netzüberlastung verhindert
 			\item Spannung am letzten Knoten bedingt Lastverschiebung

@@ -1,0 +1,82 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Szenario 4: Ergebnisse der Optimierung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}
+	\begin{axis}[
+		height=6cm, 
+		xmin=-1,
+		xmax=25,
+		ymin=-15,
+		ymax=220,
+		grid=major,
+		no markers,
+		ytick pos=left,
+		xtick pos=bottom,
+		xtick align=outside,
+		ytick align=outside,
+		ylabel style={overlay},
+		yticklabel style={overlay},
+		ylabel={Transformatorauslastung [\%]},
+		xlabel={Uhrzeit [h]},
+		legend pos=north west,
+		legend entries={
+			{optimiert (unfair)},
+			{optimiert (fair)},
+			{geregelt},
+			{normal},
+		},
+		legend cell align=left,
+	]
+		
+%		\addplot+[semithick, line join=round] table[
+%			x=x,
+%			y index=40,
+%			header=true,
+%			] {plots/data/scen3/buses-scen6-opt-unfair.dat};
+%			
+%		\addplot+[semithick, line join=round] table[
+%			x=x,
+%			y index=40,
+%			header=true,
+%			] {plots/data/scen3/buses-scen6-opt-fair.dat};
+%			
+%		\addplot+[semithick, line join=round] table[
+%			x=x,
+%			y index=40,
+%			header=true,
+%			] {plots/data/scen3/buses-scen6-controlled.dat};
+%			
+%		\addplot+[semithick, line join=round] table[
+%			x=x,
+%			y index=40,
+%			header=true,
+%			] {plots/data/scen3/buses-scen6-normal.dat};
+		
+		
+
+		\addplot+[semithick, line join=round] table[
+			x=x,
+			y=0,
+			header=true,
+			] {plots/data/scen3/trafo-scen6-opt-unfair.dat};
+			
+		\addplot+[semithick, line join=round] table[
+			x=x,
+			y=0,
+			header=true,
+			] {plots/data/scen3/trafo-scen6-opt-fair.dat};
+			
+		\addplot+[semithick, line join=round] table[
+			x=x,
+			y=0,
+			header=true,
+			] {plots/data/scen3/trafo-scen6-controlled.dat};
+		
+		\addplot+[semithick, line join=round] table[
+			x=x,
+			y=0,
+			header=true,
+			] {plots/data/scen3/trafo-scen6-normal.dat};
+	\end{axis}
+\end{tikzpicture}
