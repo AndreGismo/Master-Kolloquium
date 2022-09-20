@@ -514,8 +514,8 @@ gemeinsamen Netzzweig}
 	\begin{itemize}
 		\item Bisher ist nur eine serielle Ausführung von Optimierung und
 		Simulationsumgebung möglich
-		\item Solange die Optimierung ausgeführt wird, kann nicht reagiert 
-		werden
+		\item Im Notfall soll eine in die Simulationsumgebung integrierte
+		P(U)-Regelung das Netz regeln
 		\item Deshalb wird eine parallele Ausführung von Optimierung und
 		Simulationsumgebung realisiert
 	\end{itemize}
@@ -571,6 +571,8 @@ gemeinsamen Netzzweig}
 
 \begin{frame}{Szenario 1}
 	\only<1>{
+		Zur Demonstration der Lastverschiebung.
+		
 		Beschreibung:
 		\begin{itemize}
 			\item 6 Knoten
@@ -614,6 +616,8 @@ gemeinsamen Netzzweig}
 
 \begin{frame}{Szenario 2}
 	\only<1>{
+		Zur Demonstration der Skalierbarkeit.
+		
 		Beschreibung:
 		\begin{itemize}
 			\item 40 Knoten
@@ -664,12 +668,14 @@ gemeinsamen Netzzweig}
 
 \begin{frame}{Szenario 3}
 	\only<1>{
+		Zum Vergleich von Optimierung und Regelung.
+		
 		Beschreibung:
 		\begin{itemize}
 			\item 40 Knoten
 			\item 40 BEVs
 			\item 250\,kW Transformator
-			\item keine zusätzliche Laste
+			\item keine zusätzlichen Lasten
 			\item alle starten mit 10\;\% SOC und wollen 100\;\%
 		\end{itemize}
 	}
@@ -710,23 +716,38 @@ gemeinsamen Netzzweig}
 \section{Fazit}
 
 \begin{frame}{Fazit}
-	Punkt 1 der Aufgabenstellung:
-	\begin{itemize}
-		\item Skalierbaren Optimierungsalgorithmus entwickelt
-		\item Ausführbarkeit auf Raspberry Pi demonstriert
-		\item Optimierung allgemeiner Netztopologien muss noch umgesetzt werden
-	\end{itemize}\vspace{.5cm}
-	Punkt 2 der Aufgabenstellung:
-	\begin{itemize}
-		\item Schnittstelle zwischen Optimierung und Simulationsumgebung
-		geschaffen
-		\item Sinnhaftigkeit der Ergebnisse der Optimierung validiert
-	\end{itemize}\vspace{.5cm}
-	Punkt 3 der Aufgabenstellung:
-	\begin{itemize}
-		\item Parallelisierung von Optimierung und Netzsimulation realisiert
-		\item bla
-	\end{itemize}
+	\only<1>{
+		Punkt 1 der Aufgabenstellung:
+		\begin{itemize}
+			\item Optimierungsalgorithmus entwickelt
+			\item Automatische Skalierbarkeit/keine Begrenzung der Länge der 	
+			Zielfunktion
+			\item Ausführbarkeit auf Raspberry Pi demonstriert
+			\item Optimierung allgemeiner Netztopologien muss noch umgesetzt 
+			werden
+		\end{itemize}\vspace{.5cm}
+	}
+	
+	\only<2>{
+		Punkt 2 der Aufgabenstellung:
+		\begin{itemize}
+			\item Schnittstelle zwischen Optimierung und Simulationsumgebung
+			geschaffen
+			\item Sinnhaftigkeit der Ergebnisse der Optimierung validiert
+			\item Optimierer maximiert Netzauslastung -- und verhindert 
+			dabei Überlastung
+			\item Mithilfe zusätzlicher Restriktionen kann ein faires Laden
+			gewährleistet werden
+		\end{itemize}\vspace{.5cm}
+	}
+	
+	\only<3>{
+		Punkt 3 der Aufgabenstellung:
+		\begin{itemize}
+			\item Parallelisierung von Optimierung und Simulationsumgebung 
+			realisiert
+		\end{itemize}
+	}
 \end{frame}
 
 
@@ -749,6 +770,18 @@ gemeinsamen Netzzweig}
 			\input{tikz-picz/scratching-monkey}
 		\end{column}
 	\end{columns}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Definition von Fairness}
+	Das Verhältnis von tatsächlich geladener Energiemenge und wunschgemäß zu 
+	ladender Energiemenge (\enquote{Zielerreichung}):
+	\begin{equation*}
+		S^\mathsf{Ziel}_n=\frac{SOC_{t_{End},n}-SOC^\mathsf{Start}_n}
+		{SOC^\mathsf{Ziel}_n-SOC^\mathsf{Start}_n}
+	\end{equation*}
 \end{frame}
 \end{withoutheadline}
 
@@ -919,9 +952,60 @@ gemeinsamen Netzzweig}
 	}
 	
 	\only<5>{
-		Außerdem vier weitere, optionale Restriktionen für \enquote{faires}
-		Laden.
+		(Optional) Die Differenz der Ladeströme zueinander darf nicht größer
+		werden als eine maximal tolerierbare Differenz.
+		\begin{equation*}
+			I^\mathsf{BEV}_n-I^\mathsf{BEV}_m\leq\Delta I_\mathsf{max}
+			\quad\forall t,n,m\in\mathcal{T}\times\mathcal{N}_\mathsf{BEV}^2
+		\end{equation*}
 	}
+	
+	\only<6>{
+		(Optional) Die Differenz der Zielerreichungen zueinander darf nicht
+		größer werden als eine maximal tolerierbare Differenz.
+		\begin{equation*}
+			S^\mathsf{Ziel}_n-S^\mathsf{Ziel}_m\leq\Delta
+			S^\mathsf{Ziel}_\mathsf{max}\quad\forall
+			n,m\in\mathcal{N}_\mathsf{BEV}^2
+		\end{equation*}
+	}
+	
+	\only<7>{
+		(Optional) Die Restriktion ist aus \cite{koese2022} entnommen.
+		Fahrzeuge die schon länger an der Ladesäule stehen und warten, sollen
+		bevorzugt werden.
+		\begin{equation*}
+			\sum_{t\in\mathcal{T}}\big(I^\mathsf{BEV}_{t,n}\big)\cdot
+			\Delta\tau_n^2\leq\sum_{t\in\mathcal{T}}\big(
+			I^\mathsf{BEV}_{t,n-1}\big)\cdot\Delta\tau_{n-1}^2
+			\quad\forall n\in\mathcal{N}_\mathsf{BEV}
+		\end{equation*}
+		Mit:
+		\begin{equation*}
+			\Delta\tau_n=\frac{t^\mathsf{Ziel}_n-t}%
+			{SOC^\mathsf{Ziel}_n-SOC_{t,n}}
+		\end{equation*}
+	}
+	
+	\only<8>{
+		(Optional) Fahrzeuge die mit einem geringeren Ladestand ankommen,
+		sollen bevorzugt werden.
+		\begin{equation*}
+			SOC^\mathsf{Ziel}_n\cdot S^\mathsf{Ziel}_n-
+			SOC^\mathsf{Ziel}_{n-1}\cdot S^\mathsf{Ziel}_{n-1}=0
+			\quad\forall n\in\mathcal{N}_\mathsf{BEV}
+		\end{equation*}
+	}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
+\begin{frame}{Performanz auf Laptop/Raspberry Pi}
+	\begin{figure}
+		\centering
+		\input{plots/execution-times_raspi}
+	\end{figure}
 \end{frame}
 \end{withoutheadline}
 
