@@ -183,16 +183,17 @@ gemeinsamen Netzzweig}
 		\item Auch auf einem Raspberry Pi in \enquote{vertretbarer} Zeit 
 		ausführbar sein
 	\end{itemize}
-	
-	\onslide<2>{
-		\begin{block}{also}
-			Einschränkungen bisheriger Arbeiten überwinden und 
-			\enquote{Gratwanderung vollführen}.
-		\end{block}
-	}
 \end{frame}
 
 \section{Theorie}
+
+\begin{frame}{Betrachteter Netzstrahl}
+	\begin{figure}
+		\centering
+		\input{tikz-picz/sample-gridline}
+	\end{figure}
+\end{frame}
+
 
 \begin{frame}{Prinzip des Optimierungsalgorithmus}
 	\begin{figure}
@@ -221,14 +222,14 @@ gemeinsamen Netzzweig}
 \end{frame}
 
 
-\begin{frame}{Generischer Netzstrahl}
-	Aus den getroffenen Vereinfachungen resultierender, generischer Netzstrahl:
-	\vspace{1cm}
-	
-	\begin{figure}
-		\input{tikz-picz/gridline-abstraction}
-	\end{figure}
-\end{frame}
+%\begin{frame}{Generischer Netzstrahl}
+%	Aus den getroffenen Vereinfachungen resultierender, generischer Netzstrahl:
+%	\vspace{1cm}
+%	
+%	\begin{figure}
+%		\input{tikz-picz/gridline-abstraction}
+%	\end{figure}
+%\end{frame}
 
 
 \begin{frame}{Optimierung mit Mathematical Programming}
@@ -255,153 +256,172 @@ gemeinsamen Netzzweig}
 \end{frame}
 
 
-\begin{frame}{Grundbausteine eines Mathematical Programming}
-	\begin{description}[Restriktionen]
-		\item[Sets] zum indexieren der restlichen Bestandteile
-		\item[Parameter] als festgelegte Größen (beeinflussen Optimierung)
-		\item[Variablen] als zu bestimmende, variable Größen
-		\item[Zielfunktion] in Abhängigkeit der Variablen (zu minimieren oder
-		maximieren)
-		\item[Restriktionen] zum Einschränken der möglichen Lösungsmenge
+\begin{frame}{Formulierung als Linear Programming}
+	\begin{description}[Zielfunktion]
+		\item[Zielfunktion] Maximieren der Ladeströme
+		\item[Restriktion] Spannung am letzten Knoten darf nicht zu tief sinken
+		\item[Restriktion] Belastbarkeit des Transformators darf nicht
+		überschritten werden
+		\item[Restriktion] Belastbarkeit der einzelnen Leitungen darf nicht
+		überschritten werden
+		\item[Restriktion] Energieerhaltung während dem Ladevorgang einhalten
 	\end{description}
 	
-	\onslide<2>{
-		\begin{block}{Ziel:}
-			Variablen so bestimmen, dass Zielfunktion maximiert/minimiert wird
-		\end{block}
-	}
-\end{frame}
-
-
-\begin{frame}{Formulierung als Linear Programming}
-	\begin{Large}
-		Sets:
-	\end{Large}
-	\begin{itemize}
-		\item Menge aller Knoten: $\mathcal{N}=\{n_1, n_2,\dots,n_n\}$
-		\item Menge aller Leitungen: $\mathcal{L}=\{l_1,l_2,\dots,l_n\}$
-		\item Menge aller Koten mit Ladesäule und BEV:
-		$\mathcal{N}_\mathsf{BEV}\subset\mathcal{N}$
-		\item Menge aller Zeitschritte: $\mathcal{T}=\{t_1,t_2,\dots,t_n\}$
-	\end{itemize}
-%	\onslide<2>{
-%		\begin{block}{Weil:}
-%			Alle relevanten Größen lassen sich in den Sets indexieren
-%		\end{block}
-%	}
-\end{frame}
-
-
-\begin{frame}{Formulierung als Linear Programming}
-	\begin{Large}
-		Parameter:
-	\end{Large}
-	\begin{itemize}
-		\item Leitungsimpedanzen: $Z_l\quad\forall l\in\mathcal{L}$
-		\item Knotenspannungen: $U_n\quad\forall n\in\mathcal{N}$
-		\item Haushaltsströme:
-		$I^\mathsf{HH}_{t,n}\quad\forall t,n\in\mathcal{T}\times\mathcal{N}$
-		\item Start SOCs der BEVs:
-		$SOC^\mathsf{Start}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
-		\item Ziel SOCs der BEVs:
-		$SOC^\mathsf{Ziel}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
-		\item $\dots$
-	\end{itemize}
-%	\onslide<2>{
-%		\begin{block}{Weil:}
-%			Festgelegte Größen, die das Ergebnis der Optimierung beeinflussen
-%		\end{block}
-%	}
-\end{frame}
-
-
-\begin{frame}{Formulierung als Linear Programming}
-	\begin{Large}
-		Variablen:
-	\end{Large}
-	\begin{itemize}
-		\item Ladeströme der BEVs:
-		$I^\mathsf{BEV}_{t,n}\quad\forall t,n\in\mathcal{T}\times
-		\mathcal{N}_\mathsf{BEV}$
-		\item SOCs der BEVs:
-		$SOC_\mathsf{t,n}\quad\forall t,n\in\mathcal{T}\times
-		\mathcal{N}_\mathsf{BEV}$
-	\end{itemize}
-%	\onslide<2>{
-%		\begin{block}{Weil:}
-%			Das sind die von der Optimierung zu bestimmenden Größen
-%		\end{block}
-%	}
-\end{frame}
-
-
-\begin{frame}{Formulierung als Linear Programming}
-	\begin{Large}
-		Zielfunktion:
-	\end{Large}\vspace{.15cm}
-	
-	Maximieren der Ladeströme.
-	\begin{equation*}
-		\mathsf{max.}\quad \sum_{t\in\mathcal{T}}\Big(\sum_{n\in
-		\mathcal{N}_\mathsf{BEV}}\!\!I^\mathsf{BEV}_{t,n}\Big)
-	\end{equation*}
-%	\onslide<2>{
-%		\begin{block}{Weil:}
-%			Das ist das Ziel der Optimierung
-%		\end{block}
-%	}
-\end{frame}
-
-
-\begin{frame}[t]{Formulierung als Linear Programming}
-	\vspace*{1cm}
-	
-	\begin{Large}
-		Restriktionen:
-	\end{Large}\vspace{.15cm}
-	
-	\only<1>{
-		Der Spannungsabfall am letzten Knoten darf nicht zu groß werden.
-		\begin{equation*}
-	U_0-\sum_{l\in\mathcal{L}}\bigg(Z_l\cdot\sum_{\substack{
-	n\in\mathcal{N}\\ n\geq l}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n}
-	\Big)\bigg)\geq U_\mathsf{min}\quad\forall t\in\mathcal{T}
-		\end{equation*}
-	}
-	
 	\only<2>{
-		Die Summe der Ströme darf nicht zu groß werden.
-		\begin{equation*}
-	\sum_{n\in\mathcal{N}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n} \Big)
-	\leq I_\mathsf{max}\quad\forall t\in\mathcal{T}
-		\end{equation*}
-	}
-	
-	\only<3>{
-		Die Ströme auf den einzelnen Leitungen dürfen jeweils nicht zu
-		groß werden.
-		\begin{equation*}
-	\sum_{\substack{n\in\mathcal{N}\\n\geq l}}\Big(I^\mathsf{HH}_{t,n}
-	+I^\mathsf{BEV}_{t,n} \Big)
-	\leq I^\mathsf{max}_l\quad\forall t,l\in\mathcal{T}\times\mathcal{L}
-		\end{equation*}
-	}
-	
-	\only<4>{
-		Die Energieerhaltung während des Ladevorgangs muss gewährleistet
-		sein.
-		\begin{equation*}
-	SOC_{t,n}+\frac{I^\mathsf{BEV}_{t,n}\cdot U_n\cdot\Delta t}{E_n}
-	\cdot 100\%=SOC_{t+1,n}\quad\forall t,n\in\mathcal{T}\times
-	\mathcal{N}_\mathsf{BEV}
-		\end{equation*}
-	}
-	
-	\only<5>{
-		Außerdem vier weitere, optionale Restriktionen für \enquote{faires}
-		Laden.
+		\begin{block}{Und außerdem:}
+			Vier weitere Restriktionen für \enquote{faires} Laden
+		\end{block}			
 	}
 \end{frame}
+
+
+%\begin{frame}{Grundbausteine eines Mathematical Programming}
+%	\begin{description}[Restriktionen]
+%		\item[Sets] zum indexieren der restlichen Bestandteile
+%		\item[Parameter] als festgelegte Größen (beeinflussen Optimierung)
+%		\item[Variablen] als zu bestimmende, variable Größen
+%		\item[Zielfunktion] in Abhängigkeit der Variablen (zu minimieren oder
+%		maximieren)
+%		\item[Restriktionen] zum Einschränken der möglichen Lösungsmenge
+%	\end{description}
+%	
+%	\onslide<2>{
+%		\begin{block}{Ziel:}
+%			Variablen so bestimmen, dass Zielfunktion maximiert/minimiert wird
+%		\end{block}
+%	}
+%\end{frame}
+%
+%
+%\begin{frame}{Formulierung als Linear Programming}
+%	\begin{Large}
+%		Sets:
+%	\end{Large}
+%	\begin{itemize}
+%		\item Menge aller Knoten: $\mathcal{N}=\{n_1, n_2,\dots,n_n\}$
+%		\item Menge aller Leitungen: $\mathcal{L}=\{l_1,l_2,\dots,l_n\}$
+%		\item Menge aller Koten mit Ladesäule und BEV:
+%		$\mathcal{N}_\mathsf{BEV}\subset\mathcal{N}$
+%		\item Menge aller Zeitschritte: $\mathcal{T}=\{t_1,t_2,\dots,t_n\}$
+%	\end{itemize}
+%%	\onslide<2>{
+%%		\begin{block}{Weil:}
+%%			Alle relevanten Größen lassen sich in den Sets indexieren
+%%		\end{block}
+%%	}
+%\end{frame}
+%
+%
+%\begin{frame}{Formulierung als Linear Programming}
+%	\begin{Large}
+%		Parameter:
+%	\end{Large}
+%	\begin{itemize}
+%		\item Leitungsimpedanzen: $Z_l\quad\forall l\in\mathcal{L}$
+%		\item Knotenspannungen: $U_n\quad\forall n\in\mathcal{N}$
+%		\item Haushaltsströme:
+%		$I^\mathsf{HH}_{t,n}\quad\forall t,n\in\mathcal{T}\times\mathcal{N}$
+%		\item Start SOCs der BEVs:
+%		$SOC^\mathsf{Start}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
+%		\item Ziel SOCs der BEVs:
+%		$SOC^\mathsf{Ziel}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
+%		\item $\dots$
+%	\end{itemize}
+%%	\onslide<2>{
+%%		\begin{block}{Weil:}
+%%			Festgelegte Größen, die das Ergebnis der Optimierung beeinflussen
+%%		\end{block}
+%%	}
+%\end{frame}
+%
+%
+%\begin{frame}{Formulierung als Linear Programming}
+%	\begin{Large}
+%		Variablen:
+%	\end{Large}
+%	\begin{itemize}
+%		\item Ladeströme der BEVs:
+%		$I^\mathsf{BEV}_{t,n}\quad\forall t,n\in\mathcal{T}\times
+%		\mathcal{N}_\mathsf{BEV}$
+%		\item SOCs der BEVs:
+%		$SOC_\mathsf{t,n}\quad\forall t,n\in\mathcal{T}\times
+%		\mathcal{N}_\mathsf{BEV}$
+%	\end{itemize}
+%%	\onslide<2>{
+%%		\begin{block}{Weil:}
+%%			Das sind die von der Optimierung zu bestimmenden Größen
+%%		\end{block}
+%%	}
+%\end{frame}
+%
+%
+%\begin{frame}{Formulierung als Linear Programming}
+%	\begin{Large}
+%		Zielfunktion:
+%	\end{Large}\vspace{.15cm}
+%	
+%	Maximieren der Ladeströme.
+%	\begin{equation*}
+%		\mathsf{max.}\quad \sum_{t\in\mathcal{T}}\Big(\sum_{n\in
+%		\mathcal{N}_\mathsf{BEV}}\!\!I^\mathsf{BEV}_{t,n}\Big)
+%	\end{equation*}
+%%	\onslide<2>{
+%%		\begin{block}{Weil:}
+%%			Das ist das Ziel der Optimierung
+%%		\end{block}
+%%	}
+%\end{frame}
+%
+%
+%\begin{frame}[t]{Formulierung als Linear Programming}
+%	\vspace*{1cm}
+%	
+%	\begin{Large}
+%		Restriktionen:
+%	\end{Large}\vspace{.15cm}
+%	
+%	\only<1>{
+%		Der Spannungsabfall am letzten Knoten darf nicht zu groß werden.
+%		\begin{equation*}
+%	U_0-\sum_{l\in\mathcal{L}}\bigg(Z_l\cdot\sum_{\substack{
+%	n\in\mathcal{N}\\ n\geq l}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n}
+%	\Big)\bigg)\geq U_\mathsf{min}\quad\forall t\in\mathcal{T}
+%		\end{equation*}
+%	}
+%	
+%	\only<2>{
+%		Die Summe der Ströme darf nicht zu groß werden.
+%		\begin{equation*}
+%	\sum_{n\in\mathcal{N}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n} \Big)
+%	\leq I_\mathsf{max}\quad\forall t\in\mathcal{T}
+%		\end{equation*}
+%	}
+%	
+%	\only<3>{
+%		Die Ströme auf den einzelnen Leitungen dürfen jeweils nicht zu
+%		groß werden.
+%		\begin{equation*}
+%	\sum_{\substack{n\in\mathcal{N}\\n\geq l}}\Big(I^\mathsf{HH}_{t,n}
+%	+I^\mathsf{BEV}_{t,n} \Big)
+%	\leq I^\mathsf{max}_l\quad\forall t,l\in\mathcal{T}\times\mathcal{L}
+%		\end{equation*}
+%	}
+%	
+%	\only<4>{
+%		Die Energieerhaltung während des Ladevorgangs muss gewährleistet
+%		sein.
+%		\begin{equation*}
+%	SOC_{t,n}+\frac{I^\mathsf{BEV}_{t,n}\cdot U_n\cdot\Delta t}{E_n}
+%	\cdot 100\%=SOC_{t+1,n}\quad\forall t,n\in\mathcal{T}\times
+%	\mathcal{N}_\mathsf{BEV}
+%		\end{equation*}
+%	}
+%	
+%	\only<5>{
+%		Außerdem vier weitere, optionale Restriktionen für \enquote{faires}
+%		Laden.
+%	}
+%\end{frame}
 
 
 %\begin{frame}{Rolling Horizon für große Optimierungsprobleme}
@@ -678,9 +698,10 @@ gemeinsamen Netzzweig}
 	\only<5>{
 		Ergebnis:
 		\begin{itemize}
-			\item Netzüberlastung verhindert
+			\item Optimierung verhindert Netzüberlastung
 			\item Spannung am letzten Knoten bedingt Lastverschiebung
-			\item Nicht mehr alle Kundenwünsche erfüllt
+			\item Mit zusätzlicher Restriktion alle Kundenwünsche
+			gleichmäßig erfüllt
 		\end{itemize}
 	}
 \end{frame}
@@ -733,12 +754,174 @@ gemeinsamen Netzzweig}
 
 
 \begin{withoutheadline}
+\begin{frame}[noframenumbering]{Generischer Netzstrahl}
+	Aus den getroffenen Vereinfachungen resultierender, generischer Netzstrahl:
+	\vspace{1cm}
+	
+	\begin{figure}
+		\input{tikz-picz/gridline-abstraction}
+	\end{figure}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Grundbausteine eines Mathematical Programming}
+	\begin{description}[Restriktionen]
+		\item[Sets] zum indexieren der restlichen Bestandteile
+		\item[Parameter] als festgelegte Größen (beeinflussen Optimierung)
+		\item[Variablen] als zu bestimmende, variable Größen
+		\item[Zielfunktion] in Abhängigkeit der Variablen (zu minimieren oder
+		maximieren)
+		\item[Restriktionen] zum Einschränken der möglichen Lösungsmenge
+	\end{description}
+	
+	\onslide<2>{
+		\begin{block}{Ziel:}
+			Variablen so bestimmen, dass Zielfunktion maximiert/minimiert wird
+		\end{block}
+	}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
 \begin{frame}[noframenumbering]{Formulierung als Linear Programming}
-	Die Zielfunktion: Maximieren der Ladeströme zu allen Zeitpunkten
+	\begin{Large}
+		Sets:
+	\end{Large}
+	\begin{itemize}
+		\item Menge aller Knoten: $\mathcal{N}=\{n_1, n_2,\dots,n_n\}$
+		\item Menge aller Leitungen: $\mathcal{L}=\{l_1,l_2,\dots,l_n\}$
+		\item Menge aller Koten mit Ladesäule und BEV:
+		$\mathcal{N}_\mathsf{BEV}\subset\mathcal{N}$
+		\item Menge aller Zeitschritte: $\mathcal{T}=\{t_1,t_2,\dots,t_n\}$
+	\end{itemize}
+%	\onslide<2>{
+%		\begin{block}{Weil:}
+%			Alle relevanten Größen lassen sich in den Sets indexieren
+%		\end{block}
+%	}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Formulierung als Linear Programming}
+	\begin{Large}
+		Parameter:
+	\end{Large}
+	\begin{itemize}
+		\item Leitungsimpedanzen: $Z_l\quad\forall l\in\mathcal{L}$
+		\item Knotenspannungen: $U_n\quad\forall n\in\mathcal{N}$
+		\item Haushaltsströme:
+		$I^\mathsf{HH}_{t,n}\quad\forall t,n\in\mathcal{T}\times\mathcal{N}$
+		\item Start SOCs der BEVs:
+		$SOC^\mathsf{Start}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
+		\item Ziel SOCs der BEVs:
+		$SOC^\mathsf{Ziel}_{n}\quad\forall n\in\mathcal{N}_\mathsf{BEV}$
+		\item $\dots$
+	\end{itemize}
+%	\onslide<2>{
+%		\begin{block}{Weil:}
+%			Festgelegte Größen, die das Ergebnis der Optimierung beeinflussen
+%		\end{block}
+%	}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Formulierung als Linear Programming}
+	\begin{Large}
+		Variablen:
+	\end{Large}
+	\begin{itemize}
+		\item Ladeströme der BEVs:
+		$I^\mathsf{BEV}_{t,n}\quad\forall t,n\in\mathcal{T}\times
+		\mathcal{N}_\mathsf{BEV}$
+		\item SOCs der BEVs:
+		$SOC_\mathsf{t,n}\quad\forall t,n\in\mathcal{T}\times
+		\mathcal{N}_\mathsf{BEV}$
+	\end{itemize}
+%	\onslide<2>{
+%		\begin{block}{Weil:}
+%			Das sind die von der Optimierung zu bestimmenden Größen
+%		\end{block}
+%	}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
+\begin{frame}[noframenumbering]{Formulierung als Linear Programming}
+	\begin{Large}
+		Zielfunktion:
+	\end{Large}\vspace{.15cm}
+	
+	Maximieren der Ladeströme.
 	\begin{equation*}
-		\text{max.}\quad\sum_{t\in\mathcal{T}}\bigg(\sum_{n\in
-		\mathcal{N_\mathsf{BEV}}}\!\!I^\mathsf{BEV}_{t,n}\bigg)
+		\mathsf{max.}\quad \sum_{t\in\mathcal{T}}\Big(\sum_{n\in
+		\mathcal{N}_\mathsf{BEV}}\!\!I^\mathsf{BEV}_{t,n}\Big)
 	\end{equation*}
+%	\onslide<2>{
+%		\begin{block}{Weil:}
+%			Das ist das Ziel der Optimierung
+%		\end{block}
+%	}
+\end{frame}
+\end{withoutheadline}
+
+
+\begin{withoutheadline}
+\begin{frame}[t, noframenumbering]{Formulierung als Linear Programming}
+	\vspace*{1cm}
+	
+	\begin{Large}
+		Restriktionen:
+	\end{Large}\vspace{.15cm}
+	
+	\only<1>{
+		Der Spannungsabfall am letzten Knoten darf nicht zu groß werden.
+		\begin{equation*}
+	U_0-\sum_{l\in\mathcal{L}}\bigg(Z_l\cdot\sum_{\substack{
+	n\in\mathcal{N}\\ n\geq l}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n}
+	\Big)\bigg)\geq U_\mathsf{min}\quad\forall t\in\mathcal{T}
+		\end{equation*}
+	}
+	
+	\only<2>{
+		Die Summe der Ströme darf nicht zu groß werden.
+		\begin{equation*}
+	\sum_{n\in\mathcal{N}}\Big(I^\mathsf{HH}_{t,n}+I^\mathsf{BEV}_{t,n} \Big)
+	\leq I_\mathsf{max}\quad\forall t\in\mathcal{T}
+		\end{equation*}
+	}
+	
+	\only<3>{
+		Die Ströme auf den einzelnen Leitungen dürfen jeweils nicht zu
+		groß werden.
+		\begin{equation*}
+	\sum_{\substack{n\in\mathcal{N}\\n\geq l}}\Big(I^\mathsf{HH}_{t,n}
+	+I^\mathsf{BEV}_{t,n} \Big)
+	\leq I^\mathsf{max}_l\quad\forall t,l\in\mathcal{T}\times\mathcal{L}
+		\end{equation*}
+	}
+	
+	\only<4>{
+		Die Energieerhaltung während des Ladevorgangs muss gewährleistet
+		sein.
+		\begin{equation*}
+	SOC_{t,n}+\frac{I^\mathsf{BEV}_{t,n}\cdot U_n\cdot\Delta t}{E_n}
+	\cdot 100\%=SOC_{t+1,n}\quad\forall t,n\in\mathcal{T}\times
+	\mathcal{N}_\mathsf{BEV}
+		\end{equation*}
+	}
+	
+	\only<5>{
+		Außerdem vier weitere, optionale Restriktionen für \enquote{faires}
+		Laden.
+	}
 \end{frame}
 \end{withoutheadline}
 
